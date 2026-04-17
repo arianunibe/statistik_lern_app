@@ -398,7 +398,7 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
     },
     {
       id: 'ch3_chi_measures', chapterId: 'ch3',
-      title: 'Chi²-basierte Masse (φ, K, Cramer's V)',
+      title: 'Chi²-basierte Masse (φ, K, Cramer\'s V)',
       exerciseContext: 'Kontingenzkoeffizient K, Phi-Koeffizient φ, Cramer\'s V; Berechnungen, Normierung, wann welches Mass verwenden',
       content: String.raw`
 <h2>Chi²-basierte Zusammenhangsmasse</h2>
