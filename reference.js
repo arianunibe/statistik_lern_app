@@ -109,6 +109,16 @@ const REFERENCE_DATA = [
   </div>
 </div>
 <p class="ref-note">Lageregel bei Schiefe: rechtsschief → $\\bar{x} > \\text{Median} > \\text{Modus}$</p>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $n$ Anzahl Beobachtungen &nbsp;·&nbsp;
+  $x_i$ $i$-ter Beobachtungswert &nbsp;·&nbsp;
+  $x_{(i)}$ $i$-ter Wert in aufsteigend sortierter Reihe &nbsp;·&nbsp;
+  $m$ Hilfsgrösse: $n=2m$ (gerade) bzw. $n=2m+1$ (ungerade) &nbsp;·&nbsp;
+  $g = n{\cdot}p$ Hilfsindex für Quantilberechnung &nbsp;·&nbsp;
+  $\\lceil g \\rceil$ Aufrunden auf nächste ganze Zahl &nbsp;·&nbsp;
+  $a_j$ $j$-te Ausprägung &nbsp;·&nbsp;
+  $f(a_j)$ absolute Häufigkeit von $a_j$
+</div>
 `},
 
 // ── 3. Streuungsmasse ────────────────────────────────────────────
@@ -142,6 +152,15 @@ const REFERENCE_DATA = [
     <div class="ref-card-note">Nur für nominale Variablen</div>
   </div>
 </div>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $n$ Anzahl Beobachtungen &nbsp;·&nbsp;
+  $x_i$ $i$-ter Beobachtungswert &nbsp;·&nbsp;
+  $\\bar{x}$ arithmetisches Mittel &nbsp;·&nbsp;
+  $S^2$ empirische (deskriptive) Varianz mit Divisor $n$ &nbsp;·&nbsp;
+  $s^2$ korrigierte Varianz mit Divisor $n{-}1$ (erwartungstreu) &nbsp;·&nbsp;
+  $p_j$ relativer Anteil der Kategorie $j$ &nbsp;·&nbsp;
+  $k$ Anzahl Kategorien
+</div>
 `},
 
 // ── 4. Normalverteilung ──────────────────────────────────────────
@@ -169,6 +188,14 @@ const REFERENCE_DATA = [
     <tr><td>99%</td><td>0.01</td><td>2.576</td><td>2.326</td></tr>
   </tbody>
 </table>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $x$ Beobachtungswert &nbsp;·&nbsp;
+  $\\mu$ Mittelwert der Grundgesamtheit &nbsp;·&nbsp;
+  $\\sigma$ Standardabweichung der Grundgesamtheit &nbsp;·&nbsp;
+  $n$ Stichprobengrösse &nbsp;·&nbsp;
+  $\\sigma_{\\bar{x}} = \\sigma/\\sqrt{n}$ Standardfehler des Mittelwerts &nbsp;·&nbsp;
+  $\\alpha$ Signifikanzniveau (z.B. 0.05)
+</div>
 `},
 
 // ── 5. Konfidenzintervalle ───────────────────────────────────────
@@ -192,6 +219,14 @@ const REFERENCE_DATA = [
     $$\\hat{\\pi} \\pm z_{1-\\alpha/2} \\cdot \\sqrt{\\frac{\\hat{\\pi}(1-\\hat{\\pi})}{n}}$$
     <div class="ref-card-note">Voraussetzung: $n\\hat{\\pi} \\geq 5$ und $n(1-\\hat{\\pi}) \\geq 5$</div>
   </div>
+</div>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $\\bar{x}$ Stichprobenmittelwert &nbsp;·&nbsp;
+  $s$ korrigierte Stichproben-Standardabweichung &nbsp;·&nbsp;
+  $n$ Stichprobengrösse &nbsp;·&nbsp;
+  $z_{1-\\alpha/2}$ kritischer z-Wert bei Signifikanzniveau $\\alpha$ &nbsp;·&nbsp;
+  $t_{1-\\alpha/2,\\,n-1}$ kritischer t-Wert mit $n{-}1$ Freiheitsgraden &nbsp;·&nbsp;
+  $\\hat{\\pi}$ geschätzter Anteil in der Stichprobe
 </div>
 `},
 
@@ -228,6 +263,15 @@ const REFERENCE_DATA = [
     <tr><td>Fehler 2. Art ($\\beta$)</td><td>$H_0$ fälschlicherweise beibehalten</td><td>$= 1 - \\text{Teststärke}$</td></tr>
   </tbody>
 </table>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $\\bar{x}_1, \\bar{x}_2$ Gruppenmittelwerte &nbsp;·&nbsp;
+  $s_1^2, s_2^2$ Gruppenvarianzen &nbsp;·&nbsp;
+  $n_1, n_2$ Gruppenumfänge &nbsp;·&nbsp;
+  $b_{ij}$ beobachtete Häufigkeit in Zelle $(i,j)$ &nbsp;·&nbsp;
+  $e_{ij} = b_{i\\cdot}b_{\\cdot j}/n$ erwartete Häufigkeit unter Unabhängigkeit &nbsp;·&nbsp;
+  $k$ Anzahl Zeilen, $m$ Anzahl Spalten &nbsp;·&nbsp;
+  $r$ Pearson-Korrelation in der Stichprobe
+</div>
 `},
 
 // ── 7. Zusammenhang – Nominal ────────────────────────────────────
@@ -264,6 +308,17 @@ const REFERENCE_DATA = [
     $$\\tau = \\frac{\\sum_j\\sum_i f_{ij}^2/f_{\\cdot j} - \\sum_i f_{i\\cdot}^2/n}{n - \\sum_i f_{i\\cdot}^2/n}$$
   </div>
 </div>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $h_{ij}$ relative Häufigkeit in Zelle $(i,j)$ &nbsp;·&nbsp;
+  $h_{i\\cdot}$ Zeilenmarginal (relative Randhäufigkeit Zeile $i$) &nbsp;·&nbsp;
+  $h_{\\cdot j}$ Spaltenmarginal &nbsp;·&nbsp;
+  $f_{ij}$ absolute Häufigkeit in Zelle $(i,j)$ &nbsp;·&nbsp;
+  $f_{i\\cdot}$ Zeilenrandsumme &nbsp;·&nbsp;
+  $f_{\\cdot j}$ Spaltenrandsumme &nbsp;·&nbsp;
+  $n$ Gesamtfallzahl &nbsp;·&nbsp;
+  $k$ Zeilenanzahl, $m$ Spaltenanzahl &nbsp;·&nbsp;
+  $I = \\min(k,m)$
+</div>
 `},
 
 // ── 8. Zusammenhang – Ordinal ────────────────────────────────────
@@ -271,7 +326,7 @@ const REFERENCE_DATA = [
   title: '🔢 Zusammenhangsmasse – Ordinal',
   keywords: 'ordinal kendall tau gamma spearman rangkorrelation konkordant diskordant P Q',
   content: `
-<p class="ref-note" style="margin-bottom:10px">$P$ = konkordante Paare, $Q$ = diskordante Paare, $T_x$/$T_y$ = Bindungen</p>
+<p class="ref-note" style="margin-bottom:10px">Paarvergleich: Für jedes Paar $(i,j)$ mit $i \ne j$ prüfen ob beide Variablen gleich- oder gegensinnig geordnet sind.</p>
 <div class="ref-grid">
   <div class="ref-card">
     <div class="ref-card-name">Kendall's $\\tau_b$ (quadratisch, $k{\\times}k$)</div>
@@ -292,6 +347,15 @@ const REFERENCE_DATA = [
     $$\\rho = 1 - \\frac{6\\sum d_i^2}{n(n^2-1)} \\in [-1,1]$$
     <div class="ref-card-note">$d_i$ = Rangdifferenz; bei vielen Bindungen Pearson-Formel auf Ränge</div>
   </div>
+</div>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $P$ Anzahl konkordanter Paare (gleiche Rangordnung in beiden Variablen) &nbsp;·&nbsp;
+  $Q$ Anzahl diskordanter Paare (umgekehrte Rangordnung) &nbsp;·&nbsp;
+  $T_x$ Bindungen in Variable $X$ (gleiche Rangwerte) &nbsp;·&nbsp;
+  $T_y$ Bindungen in Variable $Y$ &nbsp;·&nbsp;
+  $m = \\min(k,m)$ kleinere Tabellendimension &nbsp;·&nbsp;
+  $d_i$ Rangdifferenz des $i$-ten Falls &nbsp;·&nbsp;
+  $n$ Fallzahl
 </div>
 `},
 
@@ -315,6 +379,15 @@ const REFERENCE_DATA = [
     $$\\eta^2 = \\frac{\\sum_j n_j(\\bar{y}_j - \\bar{y})^2}{\\sum_i(y_i-\\bar{y})^2} = \\frac{SSB}{SST} \\in [0,1]$$
     <div class="ref-card-note">Misst Stärke, nicht Richtung</div>
   </div>
+</div>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $x_i, y_i$ Beobachtungswerte der zwei Variablen &nbsp;·&nbsp;
+  $\\bar{x}, \\bar{y}$ Mittelwerte &nbsp;·&nbsp;
+  $s_x, s_y$ Standardabweichungen &nbsp;·&nbsp;
+  $n_j$ Anzahl Fälle in Gruppe $j$ (bei Eta) &nbsp;·&nbsp;
+  $\\bar{y}_j$ Mittelwert der AV in Gruppe $j$ &nbsp;·&nbsp;
+  $\\bar{y}$ Gesamtmittelwert der AV &nbsp;·&nbsp;
+  $SSB$ erklärte Quadratsumme (between), $SST$ Gesamtquadratsumme
 </div>
 `},
 
@@ -358,6 +431,17 @@ const REFERENCE_DATA = [
     <tr><td colspan="3" style="font-size:.8rem;color:#6b7280">$SST = SSE + SSR$ &nbsp;|&nbsp; $R^2 = SSE/SST$</td></tr>
   </tbody>
 </table>
+<div class="ref-legend"><strong>Notation:</strong> &nbsp;
+  $x_i$ Wert der unabhängigen Variable (UV) &nbsp;·&nbsp;
+  $y_i$ Wert der abhängigen Variable (AV) &nbsp;·&nbsp;
+  $\\hat{y}_i = a + bx_i$ geschätzter AV-Wert &nbsp;·&nbsp;
+  $\\bar{x}, \\bar{y}$ Mittelwerte &nbsp;·&nbsp;
+  $r_{xy}$ Pearson-Korrelation zwischen UV und AV &nbsp;·&nbsp;
+  $s_x, s_y$ Standardabweichungen &nbsp;·&nbsp;
+  $n$ Fallzahl &nbsp;·&nbsp;
+  $k$ Anzahl Prädiktoren &nbsp;·&nbsp;
+  $SE_b$ Standardfehler des Regressionskoeffizienten $b$
+</div>
 `},
 
 ]; // end REFERENCE_DATA
