@@ -97,13 +97,14 @@ const REFERENCE_DATA = [
   </div>
   <div class="ref-card">
     <div class="ref-card-name">Modus $\\hat{x}$</div>
-    $$\\hat{x} = \\arg\\max_{a_j}\\, f(a_j)$$
+    <p>$$\\hat{x} = \\arg\\max_{a_j}\\, f(a_j)$$</p>
     <div class="ref-card-note">Ausprägung mit grösster Häufigkeit; ab nominal; nicht eindeutig bei Multimodalität</div>
   </div>
   <div class="ref-card">
     <div class="ref-card-name">$p$-Quantil $Q_p$</div>
-    $$Q_p = x_{(\\lceil n\\cdot p \\rceil)}$$
-    <p style="font-size:.78rem;margin-top:4px">$Q_{0.25}$ = 1. Quartil &nbsp;|&nbsp; $Q_{0.5} = \\tilde{x}$ &nbsp;|&nbsp; $Q_{0.75}$ = 3. Quartil</p>
+    <p>Berechne $g = n \\cdot p$, dann:</p>
+    <p>$$Q_p = \\begin{cases} \\dfrac{x_{(g)} + x_{(g+1)}}{2} & g \\in \\mathbb{Z} \\\\ x_{(\\lceil g \\rceil)} & g \\notin \\mathbb{Z} \\end{cases}$$</p>
+    <p style="font-size:.78rem;margin-top:6px">$Q_{0.25}$ = 1. Quartil &nbsp;|&nbsp; $Q_{0.5} = \\tilde{x}$ (Median) &nbsp;|&nbsp; $Q_{0.75}$ = 3. Quartil</p>
     <div class="ref-card-note">IQR $= Q_{0.75} - Q_{0.25}$</div>
   </div>
 </div>
