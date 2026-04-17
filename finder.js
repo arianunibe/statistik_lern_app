@@ -375,7 +375,7 @@ function renderFinderStep() {
         <div class="finder-options">
           ${node.opts.map(opt => `
             <button class="finder-option-btn"
-              onclick="finderChoose('${opt.next}', ${JSON.stringify(opt.label)})">
+              onclick="finderChoose('${opt.next}', ${JSON.stringify(opt.label).replace(/"/g, '&quot;')})">
               ${opt.label}
             </button>
           `).join('')}
