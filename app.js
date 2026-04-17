@@ -15,6 +15,8 @@ function saveApiKey(key) {
 let currentTopicId = null;
 let currentTab = 'home';
 let exerciseState = null; // { question, solution, topicId }
+let chatHistory  = [];   // [{ role, content }, …]
+let chatTopicId  = null; // topic currently loaded in chat
 
 // ─── LocalStorage Keys ──────────────────────────────────────────
 const LS_KEY = 'statprue_tracking';
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupApiKeyInput();
   initFinder();
   initReference();
+  setupChat();
 });
 
 // ─── API-Key Input ────────────────────────────────────────────────
@@ -135,6 +138,7 @@ function selectTopic(topicId) {
   currentTopicId = topicId;
   const topic = getTopicById(topicId);
   if (!topic) return;
+  if (topicId !== chatTopicId) resetChat(topicId);
 
   // Update sidebar state
   document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
@@ -525,4 +529,127 @@ function updateCountdown() {
   if (diff > 0) el.textContent = `noch ${diff} Tage`;
   else if (diff === 0) el.textContent = 'Heute!';
   else el.textContent = 'Prüfung war bereits';
+}
+
+// ─── Theory Chat ──────────────────────────────────────────────────
+function setupChat() {
+  document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
+  document.getElementById('chat-clear-btn').addEventListener('click', () => {
+    if (chatTopicId) resetChat(chatTopicId);
+  });
+  const input = document.getElementById('chat-input');
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
+  });
+  // Auto-resize textarea
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+  });
+}
+
+function resetChat(topicId) {
+  chatTopicId = topicId;
+  chatHistory  = [];
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+  const topic = getTopicById(topicId);
+  container.innerHTML = `
+    <div class="chat-welcome">
+      <div class="chat-welcome-icon">💬</div>
+      <p>Du liest gerade <strong>${topic ? topic.title : 'ein Thema'}</strong>.<br>
+         Stelle eine Frage — Claude erklärt, gibt Beispiele oder klärt Unklarheiten.</p>
+    </div>`;
+}
+
+async function sendChatMessage() {
+  const input = document.getElementById('chat-input');
+  const text  = input.value.trim();
+  if (!text) return;
+
+  const apiKey = getApiKey();
+  if (!apiKey) { showToast('⚠ Kein API-Key — bitte einrichten'); switchTab('setup'); return; }
+
+  const topicId = chatTopicId || currentTopicId;
+  const topic   = getTopicById(topicId);
+  if (!topic) { showToast('Wähle zuerst ein Thema aus'); return; }
+
+  // Clear input
+  input.value = '';
+  input.style.height = 'auto';
+
+  // Add user message
+  appendChatMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  // Loading indicator
+  const loadingEl = appendChatLoading();
+  const sendBtn   = document.getElementById('chat-send-btn');
+  sendBtn.disabled = true;
+
+  const system = `Du bist ein präziser Statistik-Tutor für eine sozialwissenschaftliche Statistikvorlesung (Uni-Niveau, Sozialwissenschaften).
+Der Student liest gerade das Thema: "${topic.title}".
+Beantworte Fragen dazu klar und kompakt (max. 3 Absätze). Nutze LaTeX wo sinnvoll: $...$ für Inline-Formeln, $$...$$ für abgesetzte Formeln.
+Verwende keine Begrüssungsfloskeln. Antworte direkt und präzise.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
+        system,
+        messages: chatHistory
+      })
+    });
+    loadingEl.remove();
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data  = await res.json();
+    const reply = data.content[0].text;
+    chatHistory.push({ role: 'assistant', content: reply });
+    appendChatMsg('assistant', reply);
+  } catch (err) {
+    loadingEl.remove();
+    appendChatMsg('assistant', '⚠ Fehler: ' + err.message);
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+}
+
+function appendChatMsg(role, text) {
+  const container = document.getElementById('chat-messages');
+  container.querySelector('.chat-welcome')?.remove();
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'chat-msg ' + role;
+
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble';
+  bubble.innerHTML = markdownToHtml(text);
+  wrapper.appendChild(bubble);
+
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+
+  if (window.MathJax?.typesetPromise) MathJax.typesetPromise([bubble]).catch(() => {});
+}
+
+function appendChatLoading() {
+  const container = document.getElementById('chat-messages');
+  const wrapper = document.createElement('div');
+  wrapper.className = 'chat-msg assistant';
+  wrapper.innerHTML = '<div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>';
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+  return wrapper;
 }
