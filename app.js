@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('show-solution-btn').addEventListener('click', showSolution);
   setupApiKeyInput();
   initFinder();
+  initReference();
 });
 
 // ─── API-Key Input ────────────────────────────────────────────────

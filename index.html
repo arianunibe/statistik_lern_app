@@ -79,6 +79,7 @@
         <button class="tab-btn active" data-tab="theory">📖 Theorie</button>
         <button class="tab-btn" data-tab="exercises">✏ Übungsaufgaben</button>
         <button class="tab-btn" data-tab="finder">🧭 Methoden-Finder</button>
+        <button class="tab-btn" data-tab="reference">📋 Formelsammlung</button>
       </div>
     </div>
 
@@ -225,8 +226,23 @@
   </main>
 </div>
 
+    <!-- ── REFERENCE TAB ─────────────────────────────────── -->
+    <div id="reference-tab" class="tab-content">
+      <div id="reference-content">
+        <div class="ref-header">
+          <div class="ref-title">📋 Formelsammlung</div>
+          <input type="search" id="ref-search" placeholder="Suchen… (z.B. Varianz, Tau, KI)" />
+        </div>
+        <div id="reference-list"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script src="finder.js"></script>
+<script src="reference.js"></script>
 </body>
 </html>
