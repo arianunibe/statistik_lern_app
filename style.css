@@ -615,7 +615,7 @@ mjx-container[display="true"] {
 
 /* ─── API-Key Setup ───────────────────────────────────────── */
 .setup-content {
-  max-width: 620px; padding: 32px 28px; overflow-y: auto; flex: 1;
+  max-width: 620px; padding: 32px 28px; overflow-y: auto; flex: 1; min-height: 0;
 }
 .setup-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
 .setup-intro { font-size: .88rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
@@ -646,7 +646,7 @@ mjx-container[display="true"] {
 
 /* ─── Formelsammlung ──────────────────────────────────────── */
 #reference-content {
-  display: flex; flex-direction: column; height: 100%; overflow: hidden;
+  display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;
 }
 .ref-header {
   display: flex; align-items: center; gap: 16px;
