@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistik Lern-App – Uni Bern</title>
+
+  <!-- MathJax: LaTeX-Rendering -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        packages: { '[+]': ['ams'] },
+        tags: 'ams'
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      },
+      startup: {
+        typeset: false   // we call typeset manually after rendering content
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══════════════════════════════════════════ SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-top">
+      <div class="app-title">
+        <span class="title-main">Statistik</span>
+        <span class="title-sub">Uni Bern · Prof. Franzen</span>
+      </div>
+      <div class="exam-countdown">
+        <div class="countdown-label">Prüfung</div>
+        <div class="countdown-date">11. Juni 2026</div>
+        <div class="countdown-days" id="days-left"></div>
+      </div>
+      <div class="progress-section">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">0 / 34 Themen geübt</div>
+      </div>
+    </div>
+
+    <!-- Chapter navigation -->
+    <nav id="chapter-nav"></nav>
+
+    <!-- Weak topics summary -->
+    <div id="weak-section">
+      <div class="weak-header">⚠ Priorität: Nochmal üben</div>
+      <div id="weak-list"></div>
+    </div>
+
+    <!-- API Key -->
+    <div id="api-key-section">
+      <div class="weak-header">🔑 API-Key</div>
+      <div id="api-key-status"></div>
+      <div class="api-key-row">
+        <input type="password" id="api-key-input" autocomplete="off" />
+        <button id="api-key-save-btn">OK</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════ MAIN -->
+  <main id="main">
+
+    <!-- Header with breadcrumb + tab buttons -->
+    <div id="content-header">
+      <div id="breadcrumb">Wähle ein Thema</div>
+      <div id="tab-bar">
+        <button class="tab-btn active" data-tab="theory">📖 Theorie</button>
+        <button class="tab-btn" data-tab="exercises">✏ Übungsaufgaben</button>
+      </div>
+    </div>
+
+    <!-- ── THEORY TAB ───────────────────────────────── -->
+    <div id="theory-tab" class="tab-content active">
+      <div id="theory-content">
+        <!-- Welcome screen -->
+        <div class="welcome-screen">
+          <h2>Willkommen zur Statistik Lern-App</h2>
+          <p>Wähle links ein Thema aus um die Theorie zu lesen, oder wechsle zu
+            <strong>Übungsaufgaben</strong> für KI-generierte Aufgaben.</p>
+          <div class="chapter-grid" id="chapter-overview"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EXERCISES TAB ────────────────────────────── -->
+    <div id="exercises-tab" class="tab-content">
+      <div id="exercises-content">
+
+        <!-- Controls -->
+        <div class="exercise-controls">
+          <div class="control-row">
+            <div class="control-group">
+              <label>Thema</label>
+              <select id="ex-topic"></select>
+            </div>
+            <div class="control-group">
+              <label>Aufgabentyp</label>
+              <select id="ex-type">
+                <option value="berechnung">Berechnung</option>
+                <option value="mc">Multiple Choice</option>
+                <option value="interpretation">Interpretation</option>
+                <option value="mix">Mix</option>
+              </select>
+            </div>
+            <button id="gen-btn" class="gen-button">
+              <span class="gen-icon">⚡</span> Aufgabe generieren
+            </button>
+          </div>
+        </div>
+
+        <!-- Output area -->
+        <div id="exercise-area">
+
+          <!-- Placeholder -->
+          <div id="ex-placeholder">
+            <div class="placeholder-icon">✏</div>
+            <p>Wähle ein Thema und klicke auf „Aufgabe generieren".</p>
+          </div>
+
+          <!-- Loading -->
+          <div id="ex-loading" style="display:none">
+            <div class="spinner"></div>
+            <p>Aufgabe wird generiert…</p>
+          </div>
+
+          <!-- Result -->
+          <div id="ex-result" style="display:none">
+            <div id="ex-question-box">
+              <div class="ex-label">Aufgabe</div>
+              <div id="ex-question"></div>
+            </div>
+            <div id="ex-solution-box" style="display:none">
+              <div class="ex-label">Lösung</div>
+              <div id="ex-solution"></div>
+            </div>
+            <div class="ex-action-row">
+              <button id="show-solution-btn" class="action-btn">Lösung anzeigen</button>
+              <div id="rating-row" style="display:none">
+                <span class="rating-prompt">Wie lief's?</span>
+                <button class="rating-btn ok" onclick="rateExercise('understood')">✓ Verstanden</button>
+                <button class="rating-btn bad" onclick="rateExercise('review')">↻ Nochmal üben</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div id="ex-error" style="display:none">
+            <div class="error-box">
+              <strong>Fehler beim Generieren</strong>
+              <p id="ex-error-msg">Überprüfe den API-Key in app.js.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
