@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('gen-btn').addEventListener('click', generateExercise);
   document.getElementById('show-solution-btn').addEventListener('click', showSolution);
   setupApiKeyInput();
+  initFinder();
 });
 
 // ─── API-Key Input ────────────────────────────────────────────────

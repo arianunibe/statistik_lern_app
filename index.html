@@ -78,6 +78,7 @@
       <div id="tab-bar">
         <button class="tab-btn active" data-tab="theory">📖 Theorie</button>
         <button class="tab-btn" data-tab="exercises">✏ Übungsaufgaben</button>
+        <button class="tab-btn" data-tab="finder">🧭 Methoden-Finder</button>
       </div>
     </div>
 
@@ -167,10 +168,65 @@
       </div>
     </div>
 
+    <!-- ── FINDER TAB ──────────────────────────────────── -->
+    <div id="finder-tab" class="tab-content">
+      <div id="finder-content">
+
+        <!-- Decision Tree -->
+        <div class="finder-section">
+          <div class="finder-section-header">
+            <div class="finder-section-title">🧭 Methoden-Finder</div>
+            <div class="finder-section-sub">Beantworte die Fragen Schritt für Schritt – der Finder führt dich zur richtigen statistischen Methode.</div>
+          </div>
+          <div id="finder-tree"></div>
+        </div>
+
+        <div class="finder-divider"></div>
+
+        <!-- Scenario Training -->
+        <div class="finder-section">
+          <div class="finder-section-header">
+            <div class="finder-header-row">
+              <div>
+                <div class="finder-section-title">🎲 Szenario-Training</div>
+                <div class="finder-section-sub">Trainiere die Methodenwahl anhand von KI-generierten Forschungsszenarien.</div>
+              </div>
+              <button id="scenario-gen-btn" class="finder-btn primary">⚡ Neues Szenario</button>
+            </div>
+          </div>
+
+          <div id="scenario-empty">
+            <p class="scenario-hint">Klicke auf "Neues Szenario" — dann nutze den Methoden-Finder oben um die passende Methode zu bestimmen.</p>
+          </div>
+
+          <div id="scenario-loading" style="display:none">
+            <div class="spinner"></div>
+            <p>Szenario wird generiert…</p>
+          </div>
+
+          <div id="scenario-content" style="display:none">
+            <div class="scenario-text-card">
+              <div class="scenario-label">Forschungsszenario</div>
+              <div id="scenario-text-box"></div>
+              <div class="scenario-hint-text">→ Nutze den Methoden-Finder oben um die passende Methode zu bestimmen, dann komm zurück.</div>
+            </div>
+            <div id="scenario-check-area" style="display:none"></div>
+            <div id="scenario-answer" style="display:none"></div>
+            <div class="scenario-actions">
+              <button id="scenario-reveal-btn" class="finder-btn secondary">💡 Auflösen</button>
+              <button id="scenario-new-btn" class="finder-btn primary">⚡ Neues Szenario</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </main>
 </div>
 
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script src="finder.js"></script>
 </body>
 </html>

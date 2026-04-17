@@ -504,6 +504,115 @@ mjx-container[display="true"] {
 @keyframes slideIn { from { transform: translateX(30px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes fadeOut { to { opacity: 0; transform: translateY(10px); } }
 
+/* ─── Methoden-Finder ─────────────────────────────────────── */
+#finder-content {
+  padding: 28px;
+  overflow-y: auto;
+  flex: 1;
+  max-width: 860px;
+}
+.finder-section { margin-bottom: 8px; }
+.finder-section-header { margin-bottom: 20px; }
+.finder-section-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.finder-section-sub { font-size: .82rem; color: var(--text-muted); }
+.finder-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.finder-divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Breadcrumb */
+.finder-breadcrumb { font-size: .75rem; color: var(--text-muted); margin-bottom: 14px; flex-wrap: wrap; display: flex; align-items: center; gap: 2px; }
+.bc-item { background: var(--accent-light); color: var(--accent); border-radius: 4px; padding: 2px 7px; }
+.bc-sep { color: #d1d5db; }
+
+/* Question box */
+.finder-question-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 12px;
+}
+.finder-step-label { font-size: .72rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; }
+.finder-question-text { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 18px; }
+.finder-options { display: flex; flex-direction: column; gap: 8px; }
+.finder-option-btn {
+  text-align: left;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: .88rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.finder-option-btn:hover { border-color: var(--accent); background: var(--accent-light); color: var(--accent-dark); }
+
+/* Result box */
+.finder-result-box {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 12px;
+}
+.finder-result-title { font-size: .95rem; font-weight: 700; color: #15803d; margin-bottom: 16px; }
+.finder-methods-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.finder-method {
+  display: flex; align-items: center; gap: 12px;
+  background: #fff;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.finder-method:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(16,185,129,.12); }
+.finder-method-name { font-weight: 600; font-size: .87rem; color: var(--text); min-width: 180px; }
+.finder-method-desc { font-size: .8rem; color: var(--text-muted); flex: 1; }
+.finder-theory-link { font-size: .75rem; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+.finder-note { font-size: .78rem; color: #16a34a; background: #dcfce7; border-radius: 6px; padding: 8px 12px; }
+
+/* Buttons */
+.finder-btn {
+  border: none; border-radius: 8px; font-size: .85rem; font-weight: 600;
+  padding: 9px 18px; cursor: pointer; transition: background .15s;
+}
+.finder-btn.primary { background: var(--accent); color: #fff; }
+.finder-btn.primary:hover { background: var(--accent-dark); }
+.finder-btn.primary:disabled { background: #a5b4fc; cursor: default; }
+.finder-btn.secondary { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+.finder-btn.secondary:hover { background: var(--border); color: var(--text); }
+
+/* ─── Scenario Training ─────────────────────────────────── */
+.scenario-hint { font-size: .85rem; color: var(--text-muted); padding: 16px 0; }
+#scenario-loading { display: flex; align-items: center; gap: 12px; padding: 20px 0; }
+#scenario-loading p { color: var(--text-muted); font-size: .88rem; }
+.scenario-text-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 14px;
+}
+.scenario-label { font-size: .72rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+#scenario-text-box { font-size: .92rem; line-height: 1.7; color: var(--text); margin-bottom: 12px; }
+.scenario-hint-text { font-size: .78rem; color: var(--text-muted); font-style: italic; }
+.scenario-check { font-size: .85rem; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+.scenario-check.correct { background: #d1fae5; color: #065f46; }
+.scenario-check.wrong   { background: var(--yellow-light); color: #78350f; }
+.scenario-answer-box {
+  background: var(--accent-light);
+  border: 1px solid #c7d2fe;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.scenario-answer-title { font-weight: 700; font-size: .9rem; color: var(--accent-dark); margin-bottom: 10px; }
+.scenario-answer-methods { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.scenario-method-tag { background: var(--accent); color: #fff; border-radius: 20px; padding: 3px 10px; font-size: .75rem; font-weight: 600; }
+.scenario-answer-expl { font-size: .82rem; color: var(--accent-dark); line-height: 1.6; }
+.scenario-actions { display: flex; gap: 10px; }
+
 /* ─── Scrollbar global ────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
