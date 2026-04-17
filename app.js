@@ -13,7 +13,7 @@ function saveApiKey(key) {
 
 // ─── State ──────────────────────────────────────────────────────
 let currentTopicId = null;
-let currentTab = 'theory';
+let currentTab = 'home';
 let exerciseState = null; // { question, solution, topicId }
 
 // ─── LocalStorage Keys ──────────────────────────────────────────

@@ -76,16 +76,93 @@
     <div id="content-header">
       <div id="breadcrumb">Wähle ein Thema</div>
       <div id="tab-bar">
-        <button class="tab-btn active" data-tab="theory">📖 Theorie</button>
+        <button class="tab-btn active" data-tab="home">🏠 Start</button>
+        <button class="tab-btn" data-tab="theory">📖 Theorie</button>
         <button class="tab-btn" data-tab="exercises">✏ Übungsaufgaben</button>
         <button class="tab-btn" data-tab="finder">🧭 Methoden-Finder</button>
         <button class="tab-btn" data-tab="reference">📋 Formelsammlung</button>
-        <button class="tab-btn" data-tab="setup">🔑 API-Key</button>
+        <button class="tab-btn" data-tab="setup">📖 Anleitung: API-Key</button>
+      </div>
+    </div>
+
+    <!-- ── HOME TAB ─────────────────────────────────── -->
+    <div id="home-tab" class="tab-content active">
+      <div class="home-content">
+
+        <div class="home-hero">
+          <h1 class="home-title">Statistik Lern-App</h1>
+          <p class="home-subtitle">Interaktive Prüfungsvorbereitung — Theorie, KI-Aufgaben, Methoden-Finder und Formelsammlung in einer App.</p>
+        </div>
+
+        <div class="home-section-label">Was steckt drin?</div>
+        <div class="home-cards">
+
+          <div class="home-card" onclick="switchTab('theory')">
+            <div class="home-card-icon">📖</div>
+            <div class="home-card-body">
+              <div class="home-card-title">Theorie</div>
+              <div class="home-card-desc">8 Kapitel mit 34 Themen — von deskriptiver Statistik bis Regression. Jedes Thema enthält strukturierte Erklärungen mit LaTeX-Formeln. Wähle links in der Sidebar ein Thema aus.</div>
+            </div>
+          </div>
+
+          <div class="home-card" onclick="switchTab('exercises')">
+            <div class="home-card-icon">✏</div>
+            <div class="home-card-body">
+              <div class="home-card-title">Übungsaufgaben</div>
+              <div class="home-card-desc">KI-generierte Aufgaben für jedes Thema — Berechnung, Multiple Choice, Interpretation oder gemischter Mix. Nach jeder Aufgabe kannst du angeben ob du sie verstanden hast; schwache Themen erscheinen in der Sidebar unter "Priorität: Nochmal üben".</div>
+            </div>
+          </div>
+
+          <div class="home-card" onclick="switchTab('finder')">
+            <div class="home-card-icon">🧭</div>
+            <div class="home-card-body">
+              <div class="home-card-title">Methoden-Finder</div>
+              <div class="home-card-desc">Entscheidungsbaum: Beantworte Schritt für Schritt Fragen zu Messniveau, Anzahl Variablen und Verteilung — die App führt dich zur passenden Methode. Dazu: KI-generierte Forschungsszenarien zum Trainieren der Methodenwahl.</div>
+            </div>
+          </div>
+
+          <div class="home-card" onclick="switchTab('reference')">
+            <div class="home-card-icon">📋</div>
+            <div class="home-card-body">
+              <div class="home-card-title">Formelsammlung</div>
+              <div class="home-card-desc">Alle Kernformeln auf einen Blick: Notation-Tabelle (Stichprobe / Population / Schätzer), Lagemasse, Streuungsmasse, Normalverteilung, Konfidenzintervalle, Signifikanztests, Zusammenhangsmasse und Regression. Mit Suchfunktion und Legenden.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="home-section-label" style="margin-top:32px">Erste Schritte</div>
+        <div class="home-steps">
+          <div class="home-step">
+            <div class="home-step-num">1</div>
+            <div class="home-step-text">
+              <strong>API-Key einrichten</strong> — Die KI-Funktionen (Übungsaufgaben &amp; Szenario-Training) benötigen einen persönlichen Anthropic API-Key.
+              <a class="home-link" onclick="switchTab('setup'); return false;" href="#">Zur Anleitung →</a>
+            </div>
+          </div>
+          <div class="home-step">
+            <div class="home-step-num">2</div>
+            <div class="home-step-text"><strong>Theorie lesen</strong> — Wähle links ein Kapitel und Thema aus. Klicke auf die Kapitelkarten in der Theorie-Übersicht für einen schnellen Einstieg.</div>
+          </div>
+          <div class="home-step">
+            <div class="home-step-num">3</div>
+            <div class="home-step-text"><strong>Aufgaben lösen</strong> — Geh zu "Übungsaufgaben", wähle ein Thema und generiere eine Aufgabe. Bewerte dich nach der Lösung — die App merkt sich deine Schwächen.</div>
+          </div>
+          <div class="home-step">
+            <div class="home-step-num">4</div>
+            <div class="home-step-text"><strong>Methoden üben</strong> — Im "Methoden-Finder" kannst du die Wahl der richtigen Methode anhand von realen Szenarien trainieren — eine der häufigsten Prüfungsaufgaben.</div>
+          </div>
+        </div>
+
+        <div class="home-tip">
+          💡 Der API-Key wird nur in deinem Browser gespeichert (localStorage) und nie weitergegeben. Die App funktioniert auf jedem Gerät über <strong>arianunibe.github.io/statistik_lern_app</strong>.
+        </div>
+
       </div>
     </div>
 
     <!-- ── THEORY TAB ───────────────────────────────── -->
-    <div id="theory-tab" class="tab-content active">
+    <div id="theory-tab" class="tab-content">
       <div id="theory-content">
         <!-- Welcome screen -->
         <div class="welcome-screen">
