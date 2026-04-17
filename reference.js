@@ -91,18 +91,19 @@ const REFERENCE_DATA = [
     <div class="ref-card-note">Nur metrisch; anfällig auf Ausreisser</div>
   </div>
   <div class="ref-card">
-    <div class="ref-card-name">Median</div>
-    <p>Wert bei Rang $\\frac{n+1}{2}$ (ungerades $n$) bzw. Mittel der Ränge $\\frac{n}{2}$ und $\\frac{n}{2}+1$ (gerades $n$)</p>
+    <div class="ref-card-name">Median $\\tilde{x}$</div>
+    $$\\tilde{x} = \\begin{cases} x_{(m+1)} & n = 2m+1 \\text{ (ungerade)} \\\\ \\dfrac{x_{(m)}+x_{(m+1)}}{2} & n = 2m \\text{ (gerade)} \\end{cases}$$
     <div class="ref-card-note">Ab ordinal; robust gegenüber Ausreissern</div>
   </div>
   <div class="ref-card">
-    <div class="ref-card-name">Modus</div>
-    <p>Häufigste Ausprägung; bei mehreren Gipfeln: multimodal</p>
-    <div class="ref-card-note">Ab nominal</div>
+    <div class="ref-card-name">Modus $\\hat{x}$</div>
+    $$\\hat{x} = \\arg\\max_{a_j}\\, f(a_j)$$
+    <div class="ref-card-note">Ausprägung mit grösster Häufigkeit; ab nominal; nicht eindeutig bei Multimodalität</div>
   </div>
   <div class="ref-card">
     <div class="ref-card-name">$p$-Quantil $Q_p$</div>
-    <p>$Q_{0.25}$ = 1. Quartil, $Q_{0.5}$ = Median, $Q_{0.75}$ = 3. Quartil</p>
+    $$Q_p = x_{(\\lceil n\\cdot p \\rceil)}$$
+    <p style="font-size:.78rem;margin-top:4px">$Q_{0.25}$ = 1. Quartil &nbsp;|&nbsp; $Q_{0.5} = \\tilde{x}$ &nbsp;|&nbsp; $Q_{0.75}$ = 3. Quartil</p>
     <div class="ref-card-note">IQR $= Q_{0.75} - Q_{0.25}$</div>
   </div>
 </div>
