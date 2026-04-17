@@ -23,18 +23,16 @@ Die App ist vollständig funktionsfähig. Alle 4 Kerndateien sind implementiert:
 7. Regression I – Bivariat (OLS, R², Signifikanztest, Stata-Output)
 8. Regression II – Multivariat (Dummies, korr. R², Interaktion, Transformationen)
 
-## App starten
+## App öffnen
 
-**Wichtig:** Nicht per Doppelklick öffnen (`file://` blockiert JS). Stattdessen:
+**Online (von überall):** https://arianunibe.github.io/statistik_lern_app
 
+**Lokal:**
 ```bash
 cd "X:/Arian/allerlei/StatPrue"
 python -m http.server 8080
 ```
-
-Dann im Browser: `http://localhost:8080`
-
-Für alle Geräte im WLAN: `python -m http.server 8080 --bind 0.0.0.0` → `http://192.168.x.x:8080`
+Dann `http://localhost:8080` im Browser.
 
 ## API-Key
 
