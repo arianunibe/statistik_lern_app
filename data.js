@@ -37,6 +37,7 @@ O_n & x_{n1} & x_{n2} & \cdots & x_{nm}
   <li><strong>Abhängige Variable (AV / Regressand):</strong> vermeintliche Wirkung, in den Zeilen.</li>
 </ul>
 <div class="info-box">Statistik beginnt erst, wenn Daten numerisch vorliegen. Sie umfasst <em>nicht</em> die Datenerhebung.</div>
+<div class="info-box"><strong>Praxistipp AV/UV:</strong> In einer Umfrage ist die AV meist eine Einstellung oder ein Verhalten (z.B. Wahlabsicht, Einkommen), die UV eine Eigenschaft, die sie erklären soll (z.B. Bildung, Geschlecht). Die Frage lautet: „Erklärt die UV die Variation in der AV?"</div>
 `
     },
     {
@@ -72,6 +73,7 @@ O_n & x_{n1} & x_{n2} & \cdots & x_{nm}
 <p>Symmetrisch (\(A=B \Leftrightarrow B=A\)) und transitiv (\(A=B \land B=C \Rightarrow A=C\)).</p>
 <h3>Ordinalskala: Eigenschaften</h3>
 <p>Asymmetrisch (\(A>B \Rightarrow B<A\)) und transitiv (\(A>B \land B>C \Rightarrow A>C\)).</p>
+<div class="info-box"><strong>Warum das Skalenniveau wichtig ist:</strong> Es bestimmt, welche statistischen Methoden zulässig sind. Faustregel: Niemals mehr rechnen, als das Skalenniveau erlaubt. Schulnoten z.B. als metrisch zu behandeln und einen Mittelwert zu bilden, ist methodisch problematisch — aber in der Praxis weit verbreitet und oft toleriert, solange man es begründen kann.</div>
 `
     },
     {
@@ -92,6 +94,7 @@ O_n & x_{n1} & x_{n2} & \cdots & x_{nm}
 </table>
 <p>Multipliziert man \(f_j\) mit 100, erhält man Prozentwerte.<br>
 <strong>Achtung:</strong> Bei \(n < 50\) sollte auf Prozentwerte verzichtet werden.</p>
+<p><strong>Lesehilfe \(F_j\):</strong> \(F_j = 0{,}516\) bedeutet: 51,6% aller Beobachtungen haben einen Wert ≤ \(a_j\). Die kumulierte Häufigkeit ist besonders nützlich um den Median abzulesen (wo überschreitet \(F_j\) den Wert 0,5?).</p>
 
 <h3>Beispiel</h3>
 <table>
@@ -143,6 +146,7 @@ O_n & x_{n1} & x_{n2} & \cdots & x_{nm}
 <p>Das \(p\)-Quantil teilt die Daten so, dass mindestens Anteil \(p\) kleiner/gleich und \(1-p\) grösser/gleich ist.</p>
 \[x_p = \begin{cases} x_{(\lfloor np \rfloor + 1)} & \text{falls } np \notin \mathbb{Z} \\ x_{(np)} & \text{falls } np \in \mathbb{Z} \end{cases}\]
 <p>Spezialfall: Median = 50%-Quantil = \(x_{0{,}5}\). Quartile: \(Q_1=x_{0{,}25}\), \(Q_3=x_{0{,}75}\).</p>
+<p><strong>Rechenbeispiel:</strong> \(n=8\) Werte aufsteigend: 2, 4, 5, 6, 7, 9, 10, 13. Erstes Quartil \(Q_1 = x_{0{,}25}\): \(np = 8 \cdot 0{,}25 = 2\) (ganzzahlig) → \(Q_1 \in [x_{(2)},\, x_{(3)}] = [4,\, 5]\). Median: \(np = 4\) (ganzzahlig) → \(\tilde{x} \in [x_{(4)},\, x_{(5)}] = [6,\, 7]\), Mittelwert = 6,5.</p>
 
 <h3>Arithmetisches Mittel \(\bar{x}\)</h3>
 \[\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i = \frac{1}{n}\sum_{j=1}^{k} h_j \cdot a_j = \sum_{j=1}^{k} f_j \cdot a_j\]
@@ -157,11 +161,23 @@ O_n & x_{n1} & x_{n2} & \cdots & x_{nm}
 \[\bar{x}_g = \sqrt[n]{\prod_{i=1}^{n} x_i} \quad \text{(nur Ratioskala, z.B. Wachstumsraten)}\]
 <p>Beispiel: Renditen +20%, +25%, −33% → geom. Mittel = 1{,}00 (korrekt), arith. Mittel = 3{,}89% (falsch).</p>
 
+<h3>Welches Lagemass wann verwenden?</h3>
+<table>
+  <thead><tr><th>Situation</th><th>Empfohlenes Mass</th><th>Grund</th></tr></thead>
+  <tbody>
+    <tr><td>Nominalskala</td><td>Modus</td><td>Kein Ordnen möglich</td></tr>
+    <tr><td>Ordinalskala</td><td>Median</td><td>Rangordnung bekannt, aber Abstände unklar</td></tr>
+    <tr><td>Metrisch, symmetrisch</td><td>Arithm. Mittel</td><td>Nutzt alle Informationen</td></tr>
+    <tr><td>Metrisch, schiefe Verteilung oder Ausreisser</td><td>Median</td><td>Robust; Mittelwert wird von Extremwerten verzerrt</td></tr>
+    <tr><td>Wachstumsraten, Verhältnisse</td><td>Geometr. Mittel</td><td>Berücksichtigt multiplikative Struktur</td></tr>
+  </tbody>
+</table>
+
 <h3>Lageregeln (Schiefe)</h3>
 <ul>
   <li>\(\bar{x} \approx \tilde{x} \approx M\): <strong>symmetrisch</strong></li>
-  <li>\(\bar{x} > \tilde{x} > M\): <strong>rechtsschief (linkssteil)</strong></li>
-  <li>\(\bar{x} < \tilde{x} < M\): <strong>linksschief (rechtssteil)</strong></li>
+  <li>\(\bar{x} > \tilde{x} > M\): <strong>rechtsschief (linkssteil)</strong> — z.B. Einkommen: die meisten verdienen wenig, wenige sehr viel → langer rechter Schwanz, zieht Mittelwert nach oben</li>
+  <li>\(\bar{x} < \tilde{x} < M\): <strong>linksschief (rechtssteil)</strong> — z.B. Alter bei Pensionierung</li>
 </ul>
 `
     },
@@ -185,6 +201,7 @@ O_n & x_{n1} & x_{n2} & \cdots & x_{nm}
 <p><strong>Stichprobenvarianz (korrigiert):</strong>
 \[S^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2\]
 Wird bei Inferenz verwendet (unverzerrter Schätzer für \(\sigma^2\)).</p>
+<div class="info-box"><strong>Warum n−1?</strong> Die Formel mit \(n\) im Nenner unterschätzt die Populationsvarianz \(\sigma^2\) systematisch (die Abweichungen werden vom <em>Stichproben</em>mittelwert berechnet, der zufällig nahe bei den Daten liegt). Division durch \(n-1\) korrigiert diese Verzerrung. Man „verliert" einen Freiheitsgrad, weil \(\bar{x}\) bereits aus den Daten geschätzt wurde. Bei grossen \(n\) spielt der Unterschied kaum eine Rolle.</div>
 <p><strong>Eigenschaften:</strong>
 \[y_i = a \cdot x_i + b \Rightarrow s^2_y = a^2 \cdot s^2_x\]
 Invariant gegenüber Addition einer Konstanten.</p>
@@ -236,7 +253,8 @@ Invariant gegenüber Addition einer Konstanten.</p>
   </tbody>
 </table>
 
-<div class="info-box">Die Subtraktion von 3 im Kurtosis-Formel normiert auf die Normalverteilung. Ohne die 3 wäre der Referenzwert 3 (nicht 0).</div>
+<p><strong>Realbeispiel Schiefe:</strong> Einkommensverteilungen sind fast immer rechtsschief (\(\gamma_1 > 0\)): wenige Personen mit sehr hohem Einkommen ziehen den Mittelwert nach oben, während die Mehrheit unter dem Mittelwert liegt. Deshalb gilt bei Einkommen: \(\bar{x} > \tilde{x} > M\).</p>
+<div class="info-box">Die Subtraktion von 3 in der Kurtosis-Formel normiert auf die Normalverteilung als Referenz. Ohne die −3 wäre der Referenzwert 3 (nicht 0). Der Begriff <em>Excess Kurtosis</em> bezeichnet genau diese normierte Version.</div>
 `
     },
     {
@@ -249,9 +267,17 @@ Invariant gegenüber Addition einer Konstanten.</p>
 <h3>Lorenzkurve</h3>
 <p>Zeigt die Relation zwischen dem kumulierten Anteil der <strong>Merkmalsträger</strong> (x-Achse) und dem kumulierten Anteil der <strong>Merkmalssumme</strong> (y-Achse).</p>
 <ul>
-  <li><strong>Gleichverteilung:</strong> Kurve = Diagonale</li>
+  <li><strong>Gleichverteilung:</strong> Kurve = Diagonale (jedes Prozent der Bevölkerung besitzt gleich viel)</li>
   <li>Je stärker die Kurve nach <strong>unten gewölbt</strong>, desto grösser die Konzentration/Ungleichheit</li>
 </ul>
+<h3>Konstruktion der Lorenzkurve (Schritt für Schritt)</h3>
+<ol>
+  <li>Werte <strong>aufsteigend</strong> sortieren (ärmste zuerst)</li>
+  <li>Kumulierten Anteil der Merkmalsträger berechnen: \(u_j = j/n\) (x-Achse)</li>
+  <li>Kumulierten Anteil der Merkmalssumme berechnen: \(v_j = \sum_{i=1}^{j} x_{(i)} / \sum_{i=1}^{n} x_i\) (y-Achse)</li>
+  <li>Punkte \((u_j, v_j)\) verbinden — plus Startpunkt \((0,0)\) und Endpunkt \((1,1)\)</li>
+</ol>
+<p><strong>Beispiel:</strong> 4 Personen mit Einkommen 10, 20, 30, 40 (gesamt 100). Ärmste 25% besitzen 10% → Punkt (0.25; 0.10). Ärmste 50% besitzen 30% → Punkt (0.50; 0.30). Etc.</p>
 
 <h3>Gini-Koeffizient \(G\)</h3>
 \[G = \frac{2\cdot\sum_{i=1}^{n} i \cdot x_{(i)}}{n \cdot \sum_{i=1}^{n} x_i} - \frac{n+1}{n}\]
@@ -335,6 +361,7 @@ Gesamtsumme: \(n = \sum_i \sum_j h_{ij}\)</p>
 <h3>Bedingte Verteilungen</h3>
 <p>Spaltenprozente: \(f_{i|j} = h_{ij} / h_{\cdot j}\) – Anteil von Zeile \(i\) in Spalte \(j\).<br>
 Ein Zusammenhang zeigt sich, wenn sich die Spaltenprozente über die Spalten unterscheiden.</p>
+<div class="info-box"><strong>Merkhilfe:</strong> Wenn die Spaltenprozente für jede Zeile über alle Spalten gleich sind, besteht <em>statistische Unabhängigkeit</em> — Kenntnis der UV verbessert die Vorhersage der AV nicht. Je stärker die Spaltenprozente zwischen den Spalten variieren, desto stärker der Zusammenhang.</div>
 `
     },
     {
@@ -354,7 +381,8 @@ Ein Zusammenhang zeigt sich, wenn sich die Spaltenprozente über die Spalten unt
 <div class="info-box">Vorzeichen hängt von der Anordnung der Ausprägungen ab – immer inhaltlich kommentieren!</div>
 
 <h3>Odds-Ratio \(OR\)</h3>
-<p>Die Chance (\textit{Odds}) für Ausprägung \(b_1\) vs. \(b_2\) in Gruppe \(a_i\):</p>
+<p>Die <em>Chance</em> (Odds) für Ausprägung \(b_1\) vs. \(b_2\) in Gruppe \(a_i\):</p>
+<p><strong>Intuition Odds:</strong> Odds ist das Verhältnis von Treffer zu Nicht-Treffer. Odds = 3 bedeutet: 3-mal so viele Treffer wie Nicht-Treffer (entspricht 75% Wahrscheinlichkeit). Nicht zu verwechseln mit Wahrscheinlichkeit!</p>
 \[O_i = \frac{h_{i1}}{h_{i2}}\]
 \[OR = \frac{O_1}{O_2} = \frac{h_{11}/h_{12}}{h_{21}/h_{22}} = \frac{h_{11} \cdot h_{22}}{h_{12} \cdot h_{21}}\]
 <table>
@@ -447,6 +475,20 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
 \[E_2 = n - \sum_{j=1}^{m}\max_i(h_{ij})\]
 \[\lambda_X = \frac{\sum_{j}\max_i(h_{ij}) - \max_i(h_{i\cdot})}{n - \max_i(h_{i\cdot})}\]
 <p>Problem: Wenn alle Zeilen den gleichen Modalwert haben, ist \(\lambda = 0\) – auch wenn ein Zusammenhang besteht.</p>
+<h3>Mini-Beispiel Lambda</h3>
+<p>Variable X (Zeile): krank/gesund. Variable Y (Spalte): Raucher/Nichtraucher.</p>
+<table>
+  <thead><tr><th></th><th>Raucher</th><th>Nichtraucher</th><th>Zeilensumme</th></tr></thead>
+  <tbody>
+    <tr><td>krank</td><td>40</td><td>10</td><td>50</td></tr>
+    <tr><td>gesund</td><td>20</td><td>30</td><td>50</td></tr>
+    <tr><td>Spaltensumme</td><td>60</td><td>40</td><td>100</td></tr>
+  </tbody>
+</table>
+<p>\(E_1 = n - \max_i(h_{i\cdot}) = 100 - 50 = 50\)</p>
+<p>\(\sum_j \max_i(h_{ij}) = \max(40,20) + \max(10,30) = 40 + 30 = 70\)</p>
+<p>\(E_2 = n - 70 = 30\)</p>
+<p>\(\lambda_X = (70-50)/(100-50) = 20/50 = 0{,}40\): Kenntnis des Raucherstatus reduziert den Vorhersagefehler um 40%.</p>
 
 <h3>Goodman & Kruskal's \(\tau\)</h3>
 <p>Proportionale Fehlerreduktion bei probabilistischer Vorhersage:</p>
@@ -475,11 +517,13 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
 <h2>Zusammenhangsmasse für Ordinaldaten</h2>
 <p>Basis: <strong>Paarvergleiche</strong> zwischen je zwei Beobachtungen \((x_i, y_i)\) und \((x_j, y_j)\).</p>
 <ul>
-  <li><strong>Konkordant (C):</strong> \(x_i > x_j \land y_i > y_j\) oder \(x_i < x_j \land y_i < y_j\)</li>
-  <li><strong>Diskordant (D):</strong> \(x_i > x_j \land y_i < y_j\) oder \(x_i < x_j \land y_i > y_j\)</li>
+  <li><strong>Konkordant (C):</strong> beide Variablen ändern sich <em>gleichsinnig</em> — \(x_i > x_j \land y_i > y_j\) oder \(x_i < x_j \land y_i < y_j\)</li>
+  <li><strong>Diskordant (D):</strong> beide Variablen ändern sich <em>gegensinnig</em> — \(x_i > x_j \land y_i < y_j\) oder \(x_i < x_j \land y_i > y_j\)</li>
   <li><strong>Bindung in X (\(T_X\)):</strong> \(x_i = x_j\)</li>
   <li><strong>Bindung in Y (\(T_Y\)):</strong> \(y_i = y_j\)</li>
 </ul>
+<p><strong>Intuition:</strong> \(C > D\) bedeutet, dass wenn jemand bei X höher liegt als jemand anderes, er tendenziell auch bei Y höher liegt → positiver Zusammenhang. \(C = D\) → kein Zusammenhang. \(C < D\) → negativer Zusammenhang.</p>
+<p><strong>Zählen von C und D (Schritt für Schritt):</strong> Sortiere nach X aufsteigend. Für jede Beobachtung zähle, wie viele <em>nachfolgenden</em> Beobachtungen ein höheres Y haben (= konkordant) bzw. ein niedrigeres Y (= diskordant).</p>
 
 <h3>Kendall's Tau-a</h3>
 \[\tau_a = \frac{C - D}{n(n-1)/2} \in [-1, 1]\]
@@ -533,6 +577,7 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
 <h3>Partielle Korrelation</h3>
 \[r_{XY|Z} = \frac{r_{XY} - r_{XZ} \cdot r_{YZ}}{\sqrt{(1-r^2_{XZ})(1-r^2_{YZ})}}\]
 <p>Kontrolliert den Einfluss einer dritten Variable \(Z\). Verschwindet \(r_{XY|Z} \approx 0\), liegt möglicherweise eine <strong>Scheinkorrelation</strong> vor.</p>
+<div class="info-box"><strong>Korrelation ≠ Kausalität!</strong> Ein hoher \(r\)-Wert zeigt nur einen statistischen Zusammenhang, keine Ursache-Wirkungs-Beziehung. Klassisches Beispiel: Eisverkauf korreliert mit Ertrinkungsunfällen — die gemeinsame Ursache ist warmes Wetter (Confounder). Immer inhaltlich argumentieren und auf Drittvariablen prüfen.</div>
 `
     },
     {
@@ -560,9 +605,11 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
 <h3>Wann Spearman statt Pearson?</h3>
 <ul>
   <li>Ordinalskalierte Daten</li>
-  <li>Ausreisser im Datensatz</li>
+  <li>Ausreisser im Datensatz (Spearman ist robust gegenüber Extremwerten, da nur Ränge zählen)</li>
   <li>Stark nicht-normalverteilte metrische Daten</li>
+  <li>Nicht-linearer, aber monotoner Zusammenhang (beide steigen, aber nicht proportional)</li>
 </ul>
+<div class="info-box">Spearman ist Pearson's r angewendet auf Ränge — dadurch verliert man keine Informationen über die Rangordnung, ignoriert aber die genauen Abstände zwischen den Werten. Bindungen (ties) erhalten den Durchschnittsrang.</div>
 `
     },
     {
@@ -571,7 +618,8 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
       exerciseContext: 'Eta und Eta², Varianzzerlegung zwischen und innerhalb von Gruppen, Anwendung bei gemischtem Skalenniveau',
       content: String.raw`
 <h2>Eta und Eta² (gemischte Skalenniveaus)</h2>
-<p><strong>Anwendung:</strong> Eine nominalskalierte (\(Y\)) und eine metrische (\(X\)) Variable.</p>
+<p><strong>Anwendung:</strong> Eine nominalskalierte (\(Y\)) und eine metrische (\(X\)) Variable. Klassisches Beispiel: Beeinflusst das Geschlecht (nominal) das Einkommen (metrisch)?</p>
+<p><strong>Grundidee:</strong> Wenn die Gruppe (Y) relevant ist, sollten die Gruppenmittelwerte weit auseinander liegen (grosse Zwischen-Varianz) und die Werte innerhalb jeder Gruppe nahe beieinanderliegen (kleine Innerhalb-Varianz). \(\eta^2\) misst das Verhältnis dieser erklärten Streuung zur Gesamtstreuung.</p>
 
 <h3>Varianzzerlegung</h3>
 \[\underbrace{\sum_{j,i}(x_{ij}-\bar{x})^2}_{SQT} = \underbrace{\sum_j n_j(\bar{x}_j-\bar{x})^2}_{SQE \text{ (zwischen Gruppen)}} + \underbrace{\sum_{j,i}(x_{ij}-\bar{x}_j)^2}_{SQR \text{ (innerhalb Gruppen)}}\]
@@ -612,8 +660,9 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
       content: String.raw`
 <h2>Normalverteilung und Zentraler Grenzwertsatz</h2>
 
-<h3>Zentraler Grenzwertsatz</h3>
+<h3>Zentraler Grenzwertsatz (ZGW)</h3>
 <p>Wenn ein Merkmal aus vielen <strong>additiven Einzeleinflüssen</strong> besteht und keiner dominiert, sind die Werte <strong>normalverteilt</strong>.</p>
+<p>Noch wichtiger für die Praxis: <strong>Unabhängig davon, wie die Grundgesamtheit verteilt ist</strong> — die Mittelwerte vieler Stichproben nähern sich mit wachsendem \(n\) einer Normalverteilung an. Ab \(n \geq 30\) ist diese Näherung in der Regel gut genug, um Konfidenzintervalle und Tests durchzuführen.</p>
 <p>Die <strong>Mittelwerte aus Stichproben</strong> aus einer Grundgesamtheit sind normalverteilt mit:
 \[E(\bar{X}_n) = \mu_x, \quad \text{Var}(\bar{X}_n) = \frac{\sigma^2_x}{n}, \quad SE(\bar{X}_n) = \frac{\sigma_x}{\sqrt{n}}\]</p>
 
@@ -663,6 +712,11 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
 <h3>Interpretation</h3>
 <p>Ein 95%-KI bedeutet: Würde man das Verfahren sehr oft wiederholen, würde das Intervall in 95% der Fälle den wahren Parameter \(\mu\) enthalten.</p>
 <div class="info-box">Das KI selbst ist entweder korrekt oder nicht – es ist kein Wahrscheinlichkeitsintervall für den fixen Parameter \(\mu\).</div>
+<h3>Numerisches Beispiel</h3>
+<p>\(n = 1000\) Schülerinnen, \(\bar{x} = 100\) (IQ), \(s = 15\). Das 95%-KI ist:</p>
+\[100 \pm 1{,}96 \cdot \frac{15}{\sqrt{1000}} = 100 \pm 1{,}96 \cdot 0{,}474 = 100 \pm 0{,}93 = [99{,}07;\; 100{,}93]\]
+<p>Interpretation: Mit 95% Konfidenz liegt der wahre Mittelwert der Grundgesamtheit zwischen 99,07 und 100,93. Das Intervall ist eng, weil \(n\) gross ist — grössere Stichproben liefern präzisere Schätzungen.</p>
+<p><strong>Einfluss von n:</strong> Bei \(n = 100\) wäre das KI: \(100 \pm 1{,}96 \cdot 1{,}5 = [97{,}06;\; 102{,}94]\) — deutlich breiter.</p>
 `
     },
     {
@@ -743,6 +797,15 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
   </tbody>
 </table>
 
+<h3>Der p-Wert</h3>
+<p>Der <strong>p-Wert</strong> gibt die Wahrscheinlichkeit an, ein so extremes oder extremeres Ergebnis zu beobachten, <em>wenn H₀ wahr wäre</em>.</p>
+<ul>
+  <li>\(p < \alpha\): Ergebnis ist bei wahrer H₀ sehr unwahrscheinlich → H₀ verwerfen</li>
+  <li>\(p \geq \alpha\): Kein ausreichender Grund, H₀ zu verwerfen</li>
+  <li>Häufige Schwellen: \(p < 0{,}05\) (*), \(p < 0{,}01\) (**), \(p < 0{,}001\) (***)</li>
+</ul>
+<div class="info-box"><strong>p-Wert ≠ Wahrscheinlichkeit dass H₀ wahr ist!</strong> Ein p-Wert von 0,05 bedeutet nicht „5% Wahrscheinlichkeit, dass H₀ stimmt", sondern: „Wenn H₀ stimmt, wäre ein solches Ergebnis in 5% aller Stichproben zu beobachten."</div>
+
 <h3>Schritte eines Tests</h3>
 <ol>
   <li>Hypothesen formulieren (\(H_0, H_1\))</li>
@@ -776,6 +839,17 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
 \[SE = \sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}\]
 \[z = \frac{\hat{\pi}_1 - \hat{\pi}_2}{SE} \approx N(0,1)\]</p>
 <div class="info-box">Der gepoolte Schätzer wird verwendet, weil unter H₀ gilt: π₁ = π₂ = p. Daher schätzt man einen gemeinsamen Wert.</div>
+
+<h3>Welcher Test wann?</h3>
+<table>
+  <thead><tr><th>Situation</th><th>Test</th><th>Voraussetzung</th></tr></thead>
+  <tbody>
+    <tr><td>Mittelwertsdifferenz, \(n_1+n_2 > 30\)</td><td>z-Test</td><td>—</td></tr>
+    <tr><td>Mittelwertsdifferenz, \(n_1+n_2 \leq 30\), gleiche Varianzen</td><td>t-Test (gepoolte Varianz)</td><td>Normalverteilung in GG</td></tr>
+    <tr><td>Mittelwertsdifferenz, kleine n, ungleiche Varianzen</td><td>Welch-t-Test</td><td>Normalverteilung in GG</td></tr>
+    <tr><td>Anteilsdifferenz</td><td>z-Test mit gepooltem \(\hat{p}\)</td><td>\(n \geq 25\), Anteil ≥ 10%</td></tr>
+  </tbody>
+</table>
 `
     },
     {
@@ -1049,7 +1123,16 @@ Nullhypothese verwerfen, wenn: \(\chi^2 > \chi^2_{1-\alpha}(df)\)</p>
 
 <h3>Motivation</h3>
 <p>In der Praxis hängt eine AV von mehreren UVs ab. Die multiple Regression ermöglicht es, den Einfluss jeder Variable <strong>unter Kontrolle</strong> der anderen zu schätzen.</p>
-<p>Larzarsfeld unterscheidet vier Fälle: (1) Scheinkorrelation, (2) Interpretation (Mediation), (3) Multikausalität, (4) Interaktion.</p>
+<p>Lazarsfeld unterscheidet vier Fälle, was beim Hinzufügen einer Kontrollvariable \(Z\) passiert:</p>
+<table>
+  <thead><tr><th>Fall</th><th>Was passiert mit \(r_{XY}\)?</th><th>Bedeutung</th></tr></thead>
+  <tbody>
+    <tr><td>Scheinkorrelation</td><td>Wird unter Kontrolle von Z ≈ 0</td><td>Z ist die eigentliche Ursache beider Variablen</td></tr>
+    <tr><td>Mediation (Interpretation)</td><td>Wird unter Kontrolle von Z ≈ 0</td><td>Z liegt auf dem Kausalweg von X → Z → Y</td></tr>
+    <tr><td>Multikausalität</td><td>Bleibt signifikant</td><td>X und Z haben je einen unabhängigen Effekt auf Y</td></tr>
+    <tr><td>Interaktion (Moderation)</td><td>Variiert nach Gruppen von Z</td><td>Effekt von X auf Y unterscheidet sich je nach Z</td></tr>
+  </tbody>
+</table>
 
 <h3>Modellgleichung</h3>
 \[Y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \cdots + \beta_k x_{ik} + \varepsilon_i\]
