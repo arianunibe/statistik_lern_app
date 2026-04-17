@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Statistik Lern-App – Uni Bern</title>
+  <title>Statistik Lern-App</title>
 
   <!-- MathJax: LaTeX-Rendering -->
   <script>
@@ -34,7 +34,7 @@
     <div class="sidebar-top">
       <div class="app-title">
         <span class="title-main">Statistik</span>
-        <span class="title-sub">Uni Bern · Prof. Franzen</span>
+        <span class="title-sub">Inferenzstatistik & Methoden</span>
       </div>
       <div class="exam-countdown">
         <div class="countdown-label">Prüfung</div>
@@ -80,6 +80,7 @@
         <button class="tab-btn" data-tab="exercises">✏ Übungsaufgaben</button>
         <button class="tab-btn" data-tab="finder">🧭 Methoden-Finder</button>
         <button class="tab-btn" data-tab="reference">📋 Formelsammlung</button>
+        <button class="tab-btn" data-tab="setup">🔑 API-Key</button>
       </div>
     </div>
 
@@ -225,6 +226,67 @@
 
   </main>
 </div>
+
+    <!-- ── SETUP TAB ────────────────────────────────────── -->
+    <div id="setup-tab" class="tab-content">
+      <div class="setup-content">
+        <h2 class="setup-title">🔑 API-Key einrichten</h2>
+        <p class="setup-intro">Die Übungsaufgaben und das Szenario-Training werden von der KI <strong>Claude (Anthropic)</strong> generiert. Dafür brauchst du einen persönlichen API-Key – kein Abo, nur pay-as-you-go.</p>
+
+        <div class="setup-steps">
+
+          <div class="setup-step">
+            <div class="setup-step-num">1</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">Konto erstellen</div>
+              <p>Geh auf <strong>console.anthropic.com</strong> und registriere dich mit deiner E-Mail-Adresse.</p>
+            </div>
+          </div>
+
+          <div class="setup-step">
+            <div class="setup-step-num">2</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">API-Key erstellen</div>
+              <p>Nach dem Login: linkes Menü → <strong>API Keys</strong> → <strong>Create Key</strong>. Gib dem Key einen Namen (z.B. "Statistik App").</p>
+            </div>
+          </div>
+
+          <div class="setup-step">
+            <div class="setup-step-num">3</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">Key kopieren</div>
+              <p>Der Key wird <strong>nur einmal angezeigt</strong> und beginnt mit <code>sk-ant-api03-…</code>. Kopiere ihn sofort.</p>
+            </div>
+          </div>
+
+          <div class="setup-step">
+            <div class="setup-step-num">4</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">Key in der App eintragen</div>
+              <p>Füge den Key in das Feld <strong>🔑 API-Key</strong> unten links in der Sidebar ein und klicke <strong>OK</strong>. Der Key wird lokal in deinem Browser gespeichert und nie übertragen.</p>
+            </div>
+          </div>
+
+          <div class="setup-step">
+            <div class="setup-step-num">5</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">Ausgabelimit setzen (empfohlen)</div>
+              <p>Auf console.anthropic.com unter <strong>Billing → Usage limits</strong> kannst du ein monatliches Maximum setzen (z.B. $10), damit keine unerwarteten Kosten entstehen.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="setup-cost-box">
+          <div class="setup-cost-title">💰 Was kostet es?</div>
+          <p>Die App verwendet <strong>Claude Haiku</strong>, das günstigste Modell. Bei täglichem Lernen von 1–2h (ca. 20–40 Aufgaben/Tag) entstehen Kosten von etwa <strong>$0.15–0.25 pro Tag</strong> bzw. <strong>$4–8 pro Monat</strong>.</p>
+        </div>
+
+        <div class="setup-note">
+          Der Key bleibt in deinem Browser gespeichert (localStorage) – auf einem neuen Gerät musst du ihn einmal neu eingeben. Er wird nie an Dritte weitergegeben.
+        </div>
+      </div>
+    </div>
 
     <!-- ── REFERENCE TAB ─────────────────────────────────── -->
     <div id="reference-tab" class="tab-content">

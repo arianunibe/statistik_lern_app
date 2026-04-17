@@ -419,7 +419,7 @@ async function generateScenario() {
     .map(([k, v]) => `"${k}": ${v.title}`)
     .join('\n');
 
-  const prompt = `Du bist Statistik-Tutor an der Uni Bern (Prof. Franzen, Sozialwissenschaften).
+  const prompt = `Du bist Statistik-Tutor für eine sozialwissenschaftliche Statistikvorlesung.
 
 Generiere ein realistisches Forschungsszenario auf Deutsch (2–3 Sätze) mit konkreten sozialwissenschaftlichen Variablen (z.B. Geschlecht, Bildung, Einkommen, Alter, Parteipräferenz, SAKE- oder SHP-Daten). Das Szenario soll eine klare statistische Forschungsfrage stellen.
 

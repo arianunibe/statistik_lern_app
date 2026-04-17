@@ -287,7 +287,7 @@ function buildPrompt(topic, type) {
     mix: `Erstelle eine gemischte Aufgabe: 1 kurze Berechnungsaufgabe + 2 Interpretationsfragen.`
   };
 
-  return `Du bist ein Statistik-Tutor für eine Sozialwissenschafts-Vorlesung (Universität Bern, Prof. Franzen).
+  return `Du bist ein Statistik-Tutor für eine sozialwissenschaftliche Statistikvorlesung.
 Erstelle eine Übungsaufgabe zum Thema: **${topic.title}**
 
 Inhaltlicher Kontext: ${topic.exerciseContext}
