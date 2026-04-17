@@ -252,7 +252,7 @@ async function generateExercise() {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 2500,
+        max_tokens: 1500,
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -281,7 +281,7 @@ async function generateExercise() {
 function buildPrompt(topic, type) {
   const typeInstructions = {
     berechnung: `Erstelle eine **Berechnungsaufgabe** mit konkreten Zahlen (gut händisch rechenbar, ca. 5–15 Datenpunkte). Gib alle notwendigen Daten als Tabelle an. Zeige in der Lösung jeden Rechenschritt.`,
-    mc: `Erstelle **4 Multiple-Choice-Fragen** zum Thema. Jede Frage hat 4 Antwortoptionen (a–d), genau eine ist richtig. In der Lösung: richtige Antworten + kurze Erklärung.`,
+    mc: `Erstelle **2 Multiple-Choice-Fragen** zum Thema. Jede Frage hat 4 Antwortoptionen (a–d), genau eine ist richtig. In der Lösung: richtige Antworten + kurze Erklärung.`,
     interpretation: `Erstelle eine **Interpretationsaufgabe**: Gib einen fiktiven statistischen Output (Kreuztabelle, Regressionsoutput oder Korrelationsmatrix) und stelle 3–4 Interpretationsfragen dazu.`,
     mix: `Erstelle eine gemischte Aufgabe: 1 kurze Berechnungsaufgabe + 2 Interpretationsfragen.`
   };
