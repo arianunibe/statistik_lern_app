@@ -209,8 +209,8 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .tab-btn.active { background: var(--accent); color: #fff; }
 
 /* ─── Tab Content ─────────────────────────────────────────── */
-.tab-content { display: none; flex: 1; overflow-y: auto; }
-.tab-content.active { display: block; }
+.tab-content { display: none; flex: 1; min-height: 0; }
+.tab-content.active { display: flex; flex-direction: column; }
 .tab-content::-webkit-scrollbar { width: 6px; }
 .tab-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
@@ -237,7 +237,7 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg); colo
 .ch-card-progress { margin-top: 10px; font-size: .7rem; color: var(--text-muted); }
 
 /* ─── Theory Content ──────────────────────────────────────── */
-#theory-content { padding: 28px; max-width: 860px; }
+#theory-content { padding: 28px; max-width: 860px; flex: 1; overflow-y: auto; }
 
 /* Topic Header */
 .topic-header { margin-bottom: 24px; }
@@ -334,7 +334,7 @@ mjx-container[display="true"] {
 .topic-nav-btn.disabled { color: var(--text-muted); cursor: default; pointer-events: none; }
 
 /* ─── Exercises Panel ─────────────────────────────────────── */
-#exercises-content { padding: 24px 28px; max-width: 860px; }
+#exercises-content { padding: 24px 28px; max-width: 860px; flex: 1; overflow-y: auto; }
 
 .exercise-controls {
   background: var(--surface);
@@ -615,7 +615,7 @@ mjx-container[display="true"] {
 
 /* ─── API-Key Setup ───────────────────────────────────────── */
 .setup-content {
-  max-width: 620px; padding: 32px 28px; overflow-y: auto;
+  max-width: 620px; padding: 32px 28px; overflow-y: auto; flex: 1;
 }
 .setup-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
 .setup-intro { font-size: .88rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
