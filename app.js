@@ -256,8 +256,8 @@ async function generateExercise() {
         'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1500,
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2500,
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -302,7 +302,8 @@ Anforderungen:
 - Aufgabe auf Deutsch
 - Wenn möglich Schweizer oder sozialwissenschaftlicher Kontext (z.B. SHP-Daten, Bildung, Einkommen, SAKE)
 - Realistische, überschaubare Zahlen
-- **Wichtig: Überprüfe alle Zahlen auf Konsistenz bevor du antwortest.** Relative Häufigkeiten müssen exakt 1.0 ergeben. Absolute Häufigkeiten müssen mit relativen übereinstimmen (f_j = h_j / n). Kumulierte Werte müssen aus den vorherigen berechnet sein. Berechnete Ergebnisse in der Lösung müssen mit den Ausgangsdaten übereinstimmen.
+- **Vollständigkeit:** Die Lösung muss JEDE Teilaufgabe (a), b), c) usw.) einzeln und vollständig beantworten. Keine Teilaufgabe darf fehlen oder abgekürzt werden.
+- **Zahlenkonsistenz:** Überprüfe alle Zahlen auf Konsistenz bevor du antwortest. Relative Häufigkeiten müssen exakt 1.0 ergeben. Absolute Häufigkeiten müssen mit relativen übereinstimmen ($f_j = h_j / n$). Kumulierte Werte müssen aus den vorherigen berechnet sein. Alle berechneten Ergebnisse in der Lösung müssen mit den Ausgangsdaten übereinstimmen.
 
 Antworte GENAU in diesem Format (ohne weitere Einleitungen):
 
