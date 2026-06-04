@@ -330,36 +330,56 @@ function markdownToHtml(md) {
   const lines = md.split('\n');
   const out = [];
   let inList = false;
+  let i = 0;
 
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Table: lines starting with |
+    if (/^\|/.test(line.trim())) {
+      if (inList) { out.push('</ul>'); inList = false; }
+      const tableLines = [];
+      while (i < lines.length && /^\|/.test(lines[i].trim())) {
+        tableLines.push(lines[i]);
+        i++;
+      }
+      const parseRow = row => row.split('|').slice(1, -1).map(cell => inlineMd(cell.trim()));
+      const headerCells = parseRow(tableLines[0]);
+      // tableLines[1] is the separator row (|---|), skip it
+      const bodyRows = tableLines.slice(2).map(parseRow);
+      const thead = `<thead><tr>${headerCells.map(c => `<th>${c}</th>`).join('')}</tr></thead>`;
+      const tbody = bodyRows.map(row => `<tr>${row.map(c => `<td>${c}</td>`).join('')}</tr>`).join('');
+      out.push(`<table>${thead}<tbody>${tbody}</tbody></table>`);
+      continue;
+    }
 
     // Headers
-    if (/^### /.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h3>${inlineMd(line.slice(4))}</h3>`); continue; }
-    if (/^## /.test(line))  { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h2>${inlineMd(line.slice(3))}</h2>`); continue; }
-    if (/^# /.test(line))   { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h1>${inlineMd(line.slice(2))}</h1>`); continue; }
+    if (/^### /.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h3>${inlineMd(line.slice(4))}</h3>`); i++; continue; }
+    if (/^## /.test(line))  { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h2>${inlineMd(line.slice(3))}</h2>`); i++; continue; }
+    if (/^# /.test(line))   { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h1>${inlineMd(line.slice(2))}</h1>`); i++; continue; }
 
     // Unordered list
     if (/^- /.test(line) || /^\* /.test(line)) {
       if (!inList) { out.push('<ul>'); inList = true; }
       out.push(`<li>${inlineMd(line.slice(2))}</li>`);
-      continue;
+      i++; continue;
     }
     // Ordered list
     if (/^\d+\. /.test(line)) {
       if (!inList) { out.push('<ul>'); inList = true; }
       out.push(`<li>${inlineMd(line.replace(/^\d+\. /, ''))}</li>`);
-      continue;
+      i++; continue;
     }
 
     // End list on blank/non-list line
     if (inList && line.trim() === '') { out.push('</ul>'); inList = false; }
-    if (inList) { out.push(`<li>${inlineMd(line.slice(2))}</li>`); continue; }
+    if (inList) { out.push(`<li>${inlineMd(line.slice(2))}</li>`); i++; continue; }
 
     // Blank line → paragraph break
-    if (line.trim() === '') { out.push(''); continue; }
+    if (line.trim() === '') { out.push(''); i++; continue; }
 
     out.push(inlineMd(line));
+    i++;
   }
   if (inList) out.push('</ul>');
 
@@ -369,7 +389,7 @@ function markdownToHtml(md) {
   for (const line of out) {
     if (line === '') {
       if (para.length) { result.push(`<p>${para.join(' ')}</p>`); para = []; }
-    } else if (/^<[hul]/.test(line)) {
+    } else if (/^<[hult]/.test(line)) {
       if (para.length) { result.push(`<p>${para.join(' ')}</p>`); para = []; }
       result.push(line);
     } else {
