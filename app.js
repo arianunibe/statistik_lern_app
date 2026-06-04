@@ -302,6 +302,7 @@ Anforderungen:
 - Aufgabe auf Deutsch
 - Wenn möglich Schweizer oder sozialwissenschaftlicher Kontext (z.B. SHP-Daten, Bildung, Einkommen, SAKE)
 - Realistische, überschaubare Zahlen
+- **Wichtig: Überprüfe alle Zahlen auf Konsistenz bevor du antwortest.** Relative Häufigkeiten müssen exakt 1.0 ergeben. Absolute Häufigkeiten müssen mit relativen übereinstimmen (f_j = h_j / n). Kumulierte Werte müssen aus den vorherigen berechnet sein. Berechnete Ergebnisse in der Lösung müssen mit den Ausgangsdaten übereinstimmen.
 
 Antworte GENAU in diesem Format (ohne weitere Einleitungen):
 
