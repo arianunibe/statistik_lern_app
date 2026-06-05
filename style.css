@@ -770,7 +770,7 @@ mjx-container[display="true"] {
   font-size: .82rem; color: var(--accent-dark); line-height: 1.65;
 }
 
-/* ─── Theory Layout (content + chat side by side) ────────── */
+/* ─── Theory Layout (content + right panel side by side) ─── */
 .theory-layout {
   display: flex;
   flex-direction: row;
@@ -779,15 +779,72 @@ mjx-container[display="true"] {
   overflow: hidden;
 }
 
-/* ─── Theory Chat Panel ───────────────────────────────────── */
-#theory-chat {
+#theory-right-panel {
   width: 360px;
   min-width: 360px;
   display: flex;
   flex-direction: column;
   border-left: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* ─── Theory Chat Panel ───────────────────────────────────── */
+#theory-chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
   background: var(--surface);
   overflow: hidden;
+}
+
+/* ─── Theory Notes Panel ──────────────────────────────────── */
+#theory-notes-panel {
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface2);
+}
+
+.notes-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: .85rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+}
+.notes-header button:hover { background: var(--border); color: var(--text); }
+
+#theory-notes {
+  flex: 1;
+  resize: none;
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  font-family: var(--font);
+  font-size: .83rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--surface);
+  overflow-y: auto;
 }
 
 .chat-header {

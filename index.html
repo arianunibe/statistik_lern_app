@@ -175,21 +175,33 @@
           </div>
         </div>
 
-        <div id="theory-chat">
-          <div class="chat-header">
-            <span>💬 Fragen zum Thema</span>
-            <button id="chat-clear-btn" title="Chat zurücksetzen">↺</button>
-          </div>
-          <div class="chat-messages" id="chat-messages">
-            <div class="chat-welcome">
-              <div class="chat-welcome-icon">💬</div>
-              <p>Wähle links ein Thema aus — dann kannst du hier Fragen dazu stellen.</p>
+        <div id="theory-right-panel">
+
+          <div id="theory-chat">
+            <div class="chat-header">
+              <span>💬 Fragen zum Thema</span>
+              <button id="chat-clear-btn" title="Chat zurücksetzen">↺</button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+              <div class="chat-welcome">
+                <div class="chat-welcome-icon">💬</div>
+                <p>Wähle links ein Thema aus — dann kannst du hier Fragen dazu stellen.</p>
+              </div>
+            </div>
+            <div class="chat-input-area">
+              <textarea id="chat-input" placeholder="Frage zum Thema… (Enter = Senden, Shift+Enter = Zeilenumbruch)" rows="2"></textarea>
+              <button id="chat-send-btn">Senden</button>
             </div>
           </div>
-          <div class="chat-input-area">
-            <textarea id="chat-input" placeholder="Frage zum Thema… (Enter = Senden, Shift+Enter = Zeilenumbruch)" rows="2"></textarea>
-            <button id="chat-send-btn">Senden</button>
+
+          <div id="theory-notes-panel">
+            <div class="notes-header">
+              <span>📝 Notizen</span>
+              <button id="notes-clear-btn" title="Notizen löschen">✕</button>
+            </div>
+            <textarea id="theory-notes" placeholder="Notizen zum aktuellen Thema… (automatisch gespeichert)"></textarea>
           </div>
+
         </div>
 
       </div>

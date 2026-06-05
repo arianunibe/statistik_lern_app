@@ -23,6 +23,7 @@ let chatTopicId  = null; // topic currently loaded in chat
 // ─── LocalStorage Keys ──────────────────────────────────────────
 const LS_KEY     = 'statprue_tracking';
 const LS_ARCHIVE = 'statprue_archive';
+const LS_NOTES   = 'statprue_notes';
 
 // ─── Init ───────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('show-solution-btn').addEventListener('click', showSolution);
   document.getElementById('archive-back-btn').addEventListener('click', returnToArchiveList);
   updateArchiveCount();
+  setupNotes();
   setupApiKeyInput();
   initFinder();
   initReference();
@@ -144,6 +146,7 @@ function selectTopic(topicId) {
   const topic = getTopicById(topicId);
   if (!topic) return;
   if (topicId !== chatTopicId) resetChat(topicId);
+  loadNotesForTopic(topicId);
 
   // Update sidebar state
   document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
@@ -783,6 +786,44 @@ function loadArchiveEntry(id) {
   displayExercise(entry.question, entry.solution);
   document.getElementById('archive-back-btn').style.display = '';
   showExerciseState('result');
+}
+
+// ─── Notes ───────────────────────────────────────────────────
+
+function getNotes() {
+  try { return JSON.parse(localStorage.getItem(LS_NOTES) || '{}'); }
+  catch { return {}; }
+}
+
+function saveNoteForTopic(topicId, text) {
+  const notes = getNotes();
+  if (text.trim()) notes[topicId] = text;
+  else delete notes[topicId];
+  localStorage.setItem(LS_NOTES, JSON.stringify(notes));
+}
+
+function loadNotesForTopic(topicId) {
+  const ta = document.getElementById('theory-notes');
+  if (!ta) return;
+  const notes = getNotes();
+  ta.value = notes[topicId] || '';
+}
+
+let notesSaveTimer = null;
+
+function setupNotes() {
+  const ta = document.getElementById('theory-notes');
+  if (!ta) return;
+  ta.addEventListener('input', () => {
+    clearTimeout(notesSaveTimer);
+    notesSaveTimer = setTimeout(() => {
+      if (currentTopicId) saveNoteForTopic(currentTopicId, ta.value);
+    }, 600);
+  });
+  document.getElementById('notes-clear-btn').addEventListener('click', () => {
+    ta.value = '';
+    if (currentTopicId) saveNoteForTopic(currentTopicId, '');
+  });
 }
 
 function returnToArchiveList() {
