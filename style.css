@@ -780,31 +780,29 @@ mjx-container[display="true"] {
 }
 
 #theory-right-panel {
-  width: 360px;
-  min-width: 360px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   border-left: 1px solid var(--border);
   overflow: hidden;
 }
 
 /* ─── Theory Chat Panel ───────────────────────────────────── */
 #theory-chat {
+  width: 300px;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 0;
   background: var(--surface);
+  border-right: 1px solid var(--border);
   overflow: hidden;
 }
 
 /* ─── Theory Notes Panel ──────────────────────────────────── */
 #theory-notes-panel {
+  width: 220px;
+  min-width: 220px;
   display: flex;
   flex-direction: column;
-  height: 220px;
-  flex-shrink: 0;
-  border-top: 1px solid var(--border);
   background: var(--surface);
 }
 
