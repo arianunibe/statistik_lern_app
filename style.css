@@ -799,8 +799,8 @@ mjx-container[display="true"] {
 
 /* ─── Theory Notes Panel ──────────────────────────────────── */
 #theory-notes-panel {
-  width: 220px;
-  min-width: 220px;
+  width: 440px;
+  min-width: 440px;
   display: flex;
   flex-direction: column;
   background: var(--surface);
