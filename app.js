@@ -14,12 +14,15 @@ function saveApiKey(key) {
 // ─── State ──────────────────────────────────────────────────────
 let currentTopicId = null;
 let currentTab = 'home';
-let exerciseState = null; // { question, solution, topicId }
+let exerciseState    = null; // { question, solution, topicId }
+let exerciseSource   = 'new';  // 'new' | 'archive'
+let currentArchiveId = null;   // id of archive entry currently displayed
 let chatHistory  = [];   // [{ role, content }, …]
 let chatTopicId  = null; // topic currently loaded in chat
 
 // ─── LocalStorage Keys ──────────────────────────────────────────
-const LS_KEY = 'statprue_tracking';
+const LS_KEY     = 'statprue_tracking';
+const LS_ARCHIVE = 'statprue_archive';
 
 // ─── Init ───────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -32,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
   populateTopicSelect(null);
   document.getElementById('gen-btn').addEventListener('click', generateExercise);
   document.getElementById('show-solution-btn').addEventListener('click', showSolution);
+  document.getElementById('archive-back-btn').addEventListener('click', returnToArchiveList);
+  updateArchiveCount();
   setupApiKeyInput();
   initFinder();
   initReference();
@@ -272,6 +277,13 @@ async function generateExercise() {
     const { question, solution } = parseExercise(text);
 
     exerciseState = { question, solution, topicId };
+    const archiveEntry = {
+      id: Date.now(), topicId, topicTitle: topic.title, type,
+      question, solution, savedAt: new Date().toISOString(), rating: null
+    };
+    addToArchive(archiveEntry);
+    currentArchiveId = archiveEntry.id;
+    document.getElementById('archive-back-btn').style.display = 'none';
     displayExercise(question, solution);
     showExerciseState('result');
 
@@ -424,7 +436,7 @@ function displayExercise(question, solution) {
 }
 
 function showExerciseState(state) {
-  ['ex-placeholder', 'ex-loading', 'ex-result', 'ex-error'].forEach(id => {
+  ['ex-placeholder', 'ex-loading', 'ex-result', 'ex-error', 'ex-archive'].forEach(id => {
     document.getElementById(id).style.display = 'none';
   });
   const el = document.getElementById(`ex-${state}`);
@@ -458,6 +470,11 @@ function rateExercise(rating) {
   if (!tracking[topicId]) tracking[topicId] = { understood: 0, review: 0 };
   tracking[topicId][rating]++;
   saveTracking(tracking);
+  if (currentArchiveId !== null) {
+    const archive = getArchive();
+    const entry = archive.find(e => e.id === currentArchiveId);
+    if (entry) { entry.rating = rating; saveArchiveData(archive); }
+  }
 
   // Update dot in sidebar
   const dot = document.querySelector(`#ti-${topicId} .topic-dot`);
@@ -674,4 +691,105 @@ function appendChatLoading() {
   container.appendChild(wrapper);
   container.scrollTop = container.scrollHeight;
   return wrapper;
+}
+
+// ─── Archive ─────────────────────────────────────────────────
+
+function getArchive() {
+  try { return JSON.parse(localStorage.getItem(LS_ARCHIVE) || '[]'); }
+  catch { return []; }
+}
+
+function saveArchiveData(data) {
+  localStorage.setItem(LS_ARCHIVE, JSON.stringify(data));
+}
+
+function addToArchive(entry) {
+  const archive = getArchive();
+  archive.unshift(entry);
+  if (archive.length > 200) archive.pop();
+  saveArchiveData(archive);
+  updateArchiveCount();
+}
+
+function updateArchiveCount() {
+  const el = document.getElementById('archive-count');
+  if (el) el.textContent = getArchive().length;
+}
+
+function switchExerciseSource(source) {
+  exerciseSource = source;
+  document.getElementById('src-new-btn').classList.toggle('active', source === 'new');
+  document.getElementById('src-archive-btn').classList.toggle('active', source === 'archive');
+  document.getElementById('new-exercise-controls').style.display = source === 'new' ? '' : 'none';
+  document.getElementById('archive-filter-row').style.display = source === 'archive' ? '' : 'none';
+  if (source === 'new') {
+    showExerciseState('placeholder');
+    document.getElementById('archive-back-btn').style.display = 'none';
+    currentArchiveId = null;
+  } else {
+    showExerciseState('placeholder');
+    document.getElementById('ex-placeholder').style.display = 'none';
+    document.getElementById('ex-archive').style.display = 'block';
+    renderArchiveList();
+  }
+}
+
+function renderArchiveList() {
+  const archive = getArchive();
+  const filterTopic = document.getElementById('archive-filter-topic').value;
+  populateArchiveTopicFilter(archive);
+  const filtered = filterTopic ? archive.filter(e => e.topicId === filterTopic) : archive;
+  const list = document.getElementById('archive-list');
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="archive-empty">${
+      archive.length === 0
+        ? 'Noch keine gespeicherten Aufgaben. Generiere zuerst eine neue Aufgabe.'
+        : 'Keine Aufgaben für dieses Thema.'
+    }</div>`;
+    return;
+  }
+  const typeLabels = { berechnung: 'Berechnung', mc: 'Multiple Choice', interpretation: 'Interpretation', mix: 'Mix' };
+  list.innerHTML = filtered.map(entry => {
+    const date = new Date(entry.savedAt).toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: '2-digit' });
+    const ratingBadge = entry.rating === 'understood'
+      ? '<span class="arch-rating ok">✓ Verstanden</span>'
+      : entry.rating === 'review'
+      ? '<span class="arch-rating bad">↻ Nochmal</span>'
+      : '';
+    return `<div class="archive-item" onclick="loadArchiveEntry(${entry.id})">
+      <div class="archive-item-topic">${entry.topicTitle} ${ratingBadge}</div>
+      <div class="archive-item-meta">${typeLabels[entry.type] || entry.type} &middot; ${date}</div>
+    </div>`;
+  }).join('');
+}
+
+function populateArchiveTopicFilter(archive) {
+  const sel = document.getElementById('archive-filter-topic');
+  const current = sel.value;
+  const seen = new Map();
+  archive.forEach(e => { if (!seen.has(e.topicId)) seen.set(e.topicId, e.topicTitle); });
+  sel.innerHTML = '<option value="">Alle Themen</option>' +
+    [...seen.entries()].map(([id, title]) =>
+      `<option value="${id}"${id === current ? ' selected' : ''}>${title}</option>`
+    ).join('');
+}
+
+function loadArchiveEntry(id) {
+  const entry = getArchive().find(e => e.id === id);
+  if (!entry) return;
+  currentArchiveId = id;
+  exerciseState = { question: entry.question, solution: entry.solution, topicId: entry.topicId };
+  displayExercise(entry.question, entry.solution);
+  document.getElementById('archive-back-btn').style.display = '';
+  showExerciseState('result');
+}
+
+function returnToArchiveList() {
+  currentArchiveId = null;
+  document.getElementById('archive-back-btn').style.display = 'none';
+  showExerciseState('placeholder');
+  document.getElementById('ex-placeholder').style.display = 'none';
+  document.getElementById('ex-archive').style.display = 'block';
+  renderArchiveList();
 }

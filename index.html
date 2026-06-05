@@ -201,7 +201,11 @@
 
         <!-- Controls -->
         <div class="exercise-controls">
-          <div class="control-row">
+          <div class="source-toggle-row">
+            <button class="source-btn active" id="src-new-btn" onclick="switchExerciseSource('new')">⚡ Neu generieren</button>
+            <button class="source-btn" id="src-archive-btn" onclick="switchExerciseSource('archive')">📂 Archiv (<span id="archive-count">0</span>)</button>
+          </div>
+          <div class="control-row" id="new-exercise-controls">
             <div class="control-group">
               <label>Thema</label>
               <select id="ex-topic"></select>
@@ -218,6 +222,14 @@
             <button id="gen-btn" class="gen-button">
               <span class="gen-icon">⚡</span> Aufgabe generieren
             </button>
+          </div>
+          <div class="control-row" id="archive-filter-row" style="display:none">
+            <div class="control-group">
+              <label>Thema filtern</label>
+              <select id="archive-filter-topic" onchange="renderArchiveList()">
+                <option value="">Alle Themen</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -247,6 +259,7 @@
               <div id="ex-solution"></div>
             </div>
             <div class="ex-action-row">
+              <button id="archive-back-btn" class="action-btn secondary" style="display:none">← Archiv-Liste</button>
               <button id="show-solution-btn" class="action-btn">Lösung anzeigen</button>
               <div id="rating-row" style="display:none">
                 <span class="rating-prompt">Wie lief's?</span>
@@ -254,6 +267,11 @@
                 <button class="rating-btn bad" onclick="rateExercise('review')">↻ Nochmal üben</button>
               </div>
             </div>
+          </div>
+
+          <!-- Archive list -->
+          <div id="ex-archive" style="display:none">
+            <div id="archive-list"></div>
           </div>
 
           <!-- Error -->
