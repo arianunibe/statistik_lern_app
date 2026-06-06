@@ -328,7 +328,8 @@ Antworte GENAU in diesem Format (ohne weitere Einleitungen):
 ## Lösung
 [Vollständige Lösung mit allen Schritten hier]
 
-Verwende LaTeX-Notation: $formel$ für Inline-Formeln, $$formel$$ für abgesetzte Formeln.`;
+Verwende LaTeX-Notation: $formel$ für Inline-Formeln, $$formel$$ für abgesetzte Formeln.
+Stata-/SPSS-Output, Regressionstabellen und ähnliche vorformatierte Outputs IMMER in einen Codeblock einschliessen (\`\`\`stata ... \`\`\`), damit die Spaltenausrichtung erhalten bleibt.`;
 }
 
 function parseExercise(text) {
@@ -351,6 +352,20 @@ function markdownToHtml(md) {
 
   while (i < lines.length) {
     const line = lines[i];
+
+    // Fenced code block (``` or ```stata etc.)
+    if (/^```/.test(line.trim())) {
+      if (inList) { out.push('</ul>'); inList = false; }
+      const codeLines = [];
+      i++;
+      while (i < lines.length && !/^```/.test(lines[i].trim())) {
+        codeLines.push(lines[i].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+        i++;
+      }
+      i++; // skip closing ```
+      out.push(`<pre><code>${codeLines.join('\n')}</code></pre>`);
+      continue;
+    }
 
     // Table: lines starting with |
     if (/^\|/.test(line.trim())) {
