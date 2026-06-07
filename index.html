@@ -216,6 +216,7 @@
           <div class="source-toggle-row">
             <button class="source-btn active" id="src-new-btn" onclick="switchExerciseSource('new')">⚡ Neu generieren</button>
             <button class="source-btn" id="src-archive-btn" onclick="switchExerciseSource('archive')">📂 Archiv (<span id="archive-count">0</span>)</button>
+            <button class="source-btn" id="src-exam-btn" onclick="switchExerciseSource('exam')">🎯 Prüfungsmodus</button>
           </div>
           <div class="control-row" id="new-exercise-controls">
             <div class="control-group">
@@ -247,6 +248,19 @@
 
         <!-- Output area -->
         <div id="exercise-area">
+
+          <!-- Exam navigation bar (controlled independently of state) -->
+          <div id="exam-nav" style="display:none">
+            <div class="exam-nav-bar">
+              <span class="exam-topic-badge" id="exam-topic-label"></span>
+              <span class="exam-counter" id="exam-counter">Aufgabe 1 / 5</span>
+              <div class="exam-nav-btns">
+                <button class="exam-nav-btn" id="exam-prev-btn" onclick="examNavigate(-1)">← Zurück</button>
+                <button class="exam-nav-btn" id="exam-next-btn" onclick="examNavigate(1)">Weiter →</button>
+              </div>
+            </div>
+            <div class="exam-dots" id="exam-dots"></div>
+          </div>
 
           <!-- Placeholder -->
           <div id="ex-placeholder">
@@ -284,6 +298,39 @@
           <!-- Archive list -->
           <div id="ex-archive" style="display:none">
             <div id="archive-list"></div>
+          </div>
+
+          <!-- Exam config & summary -->
+          <div id="ex-exam-config" style="display:none">
+            <div id="exam-config-form" class="exam-config-card">
+              <div class="exam-config-title">🎯 Prüfungsmodus</div>
+              <div class="exam-config-desc">Zufällige Aufgaben aus verschiedenen Themengebieten — wie in der Prüfung.</div>
+
+              <div class="exam-config-row">
+                <div class="exam-config-label">Anzahl Aufgaben</div>
+                <div class="exam-btn-group" id="exam-count-group">
+                  <button class="exam-opt-btn active" data-value="5" onclick="setExamCount(5)">5</button>
+                  <button class="exam-opt-btn" data-value="10" onclick="setExamCount(10)">10</button>
+                  <button class="exam-opt-btn" data-value="15" onclick="setExamCount(15)">15</button>
+                  <button class="exam-opt-btn" data-value="20" onclick="setExamCount(20)">20</button>
+                </div>
+              </div>
+
+              <div class="exam-config-row">
+                <div class="exam-config-label">Aufgaben aus</div>
+                <div class="exam-btn-group" id="exam-source-group">
+                  <button class="exam-opt-btn active" data-value="new" onclick="setExamSource('new')">⚡ Neu generieren</button>
+                  <button class="exam-opt-btn" data-value="archive" onclick="setExamSource('archive')">📂 Archiv</button>
+                  <button class="exam-opt-btn" data-value="mixed" onclick="setExamSource('mixed')">🔀 Gemischt</button>
+                </div>
+                <div id="exam-archive-hint" class="exam-archive-hint" style="display:none"></div>
+              </div>
+
+              <button id="exam-start-btn" class="gen-button" style="width:100%">
+                <span class="gen-icon">🎯</span> Prüfung starten
+              </button>
+            </div>
+            <div id="exam-summary" style="display:none"></div>
           </div>
 
           <!-- Error -->

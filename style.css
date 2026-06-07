@@ -1057,6 +1057,104 @@ mjx-container[display="true"] {
 .action-btn.secondary { background: var(--surface2); color: var(--text-muted); border-color: var(--border); }
 .action-btn.secondary:hover { background: var(--border); color: var(--text); }
 
+/* ─── Exam Config ──────────────────────────────────────────── */
+#ex-exam-config { padding: 4px 0; }
+
+.exam-config-card, #exam-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  max-width: 560px;
+}
+
+.exam-config-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+.exam-config-desc { color: var(--text-muted); font-size: .875rem; margin-bottom: 24px; }
+.exam-config-row { margin-bottom: 20px; }
+.exam-config-label {
+  display: block;
+  font-size: .75rem; font-weight: 700;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px;
+  margin-bottom: 8px;
+}
+
+.exam-btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.exam-opt-btn {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  border-radius: 8px;
+  font-size: .85rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all .15s;
+}
+.exam-opt-btn:hover { border-color: var(--accent); color: var(--accent); }
+.exam-opt-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.exam-archive-hint {
+  font-size: .8rem; color: var(--text-muted);
+  background: var(--surface2); border-radius: 6px;
+  padding: 7px 12px; margin-top: 4px;
+}
+
+/* ─── Exam Nav Bar ──────────────────────────────────────────── */
+#exam-nav {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.exam-nav-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 10px;
+}
+
+.exam-topic-badge {
+  font-size: .78rem; font-weight: 600;
+  background: var(--accent-light); color: var(--accent-dark);
+  border-radius: 20px; padding: 3px 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px;
+}
+
+.exam-counter { font-size: .85rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+
+.exam-nav-btns { display: flex; gap: 8px; }
+.exam-nav-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  border-radius: 6px;
+  font-size: .82rem; cursor: pointer; color: var(--text);
+  transition: all .15s;
+}
+.exam-nav-btn:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; }
+.exam-nav-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+.exam-dots { display: flex; gap: 6px; flex-wrap: wrap; }
+.exam-dot {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--border); cursor: pointer; transition: background .15s;
+}
+.exam-dot.active { background: var(--accent); }
+.exam-dot.ok  { background: var(--green); }
+.exam-dot.bad { background: var(--yellow); }
+
+/* ─── Exam Summary ──────────────────────────────────────────── */
+.exam-summary-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; }
+.exam-summary-stats { display: flex; gap: 16px; margin-bottom: 4px; }
+.exam-stat { flex: 1; text-align: center; padding: 16px 12px; border-radius: var(--radius); }
+.exam-stat.ok      { background: var(--green-light); }
+.exam-stat.bad     { background: var(--yellow-light); }
+.exam-stat.neutral { background: var(--surface2); }
+.exam-stat-num { font-size: 2rem; font-weight: 700; line-height: 1; }
+.exam-stat.ok  .exam-stat-num { color: #065f46; }
+.exam-stat.bad .exam-stat-num { color: #92400e; }
+.exam-stat.neutral .exam-stat-num { color: var(--text-muted); }
+.exam-stat-label { font-size: .78rem; color: var(--text-muted); margin-top: 6px; }
+
 /* ─── Code / Stata Output ───────────────────────────────── */
 #ex-question pre, #ex-solution pre {
   background: #1e1b2e;

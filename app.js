@@ -15,8 +15,12 @@ function saveApiKey(key) {
 let currentTopicId = null;
 let currentTab = 'home';
 let exerciseState    = null; // { question, solution, topicId }
-let exerciseSource   = 'new';  // 'new' | 'archive'
+let exerciseSource   = 'new';  // 'new' | 'archive' | 'exam'
 let currentArchiveId = null;   // id of archive entry currently displayed
+let examQueue        = [];     // [{...archiveEntry, fromArchive}]
+let examIndex        = 0;
+let examCount        = 5;
+let examSourceMode   = 'new';  // 'new' | 'archive' | 'mixed'
 let chatHistory  = [];   // [{ role, content }, …]
 let chatTopicId  = null; // topic currently loaded in chat
 
@@ -37,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('gen-btn').addEventListener('click', generateExercise);
   document.getElementById('show-solution-btn').addEventListener('click', showSolution);
   document.getElementById('archive-back-btn').addEventListener('click', returnToArchiveList);
+  document.getElementById('exam-start-btn').addEventListener('click', startExam);
   updateArchiveCount();
   setupNotes();
   setupApiKeyInput();
@@ -234,49 +239,42 @@ function populateTopicSelect(selectedId) {
 
 // ─── Exercise Generation ─────────────────────────────────────────
 
+async function callAnthropicApi(prompt) {
+  const apiKey = getApiKey();
+  if (!apiKey) throw new Error('Kein API-Key gefunden. Bitte trage deinen Anthropic API-Key in der Sidebar ein (🔑 API-Key).');
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 8000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${response.status}`);
+  }
+  const data = await response.json();
+  return data.content?.[0]?.text || '';
+}
+
 async function generateExercise() {
   const topicId = document.getElementById('ex-topic').value;
   const type = document.getElementById('ex-type').value;
   const topic = getTopicById(topicId);
   if (!topic) return;
 
-  // Reset UI
   showExerciseState('loading');
   document.getElementById('gen-btn').disabled = true;
 
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    showExerciseState('error');
-    document.getElementById('ex-error-msg').textContent =
-      'Kein API-Key gefunden. Bitte trage deinen Anthropic API-Key in der Sidebar ein (🔑 API-Key).';
-    document.getElementById('gen-btn').disabled = false;
-    return;
-  }
-
   try {
-    const prompt = buildPrompt(topic, type);
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 8000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-    const text = data.content?.[0]?.text || '';
+    const text = await callAnthropicApi(buildPrompt(topic, type));
     const { question, solution } = parseExercise(text);
 
     exerciseState = { question, solution, topicId };
@@ -454,7 +452,7 @@ function displayExercise(question, solution) {
 }
 
 function showExerciseState(state) {
-  ['ex-placeholder', 'ex-loading', 'ex-result', 'ex-error', 'ex-archive'].forEach(id => {
+  ['ex-placeholder', 'ex-loading', 'ex-result', 'ex-error', 'ex-archive', 'ex-exam-config'].forEach(id => {
     document.getElementById(id).style.display = 'none';
   });
   const el = document.getElementById(`ex-${state}`);
@@ -492,6 +490,10 @@ function rateExercise(rating) {
     const archive = getArchive();
     const entry = archive.find(e => e.id === currentArchiveId);
     if (entry) { entry.rating = rating; saveArchiveData(archive); }
+  }
+  if (examQueue.length > 0 && examQueue[examIndex]) {
+    examQueue[examIndex].rating = rating;
+    updateExamDots();
   }
 
   // Update dot in sidebar
@@ -739,17 +741,29 @@ function switchExerciseSource(source) {
   exerciseSource = source;
   document.getElementById('src-new-btn').classList.toggle('active', source === 'new');
   document.getElementById('src-archive-btn').classList.toggle('active', source === 'archive');
+  document.getElementById('src-exam-btn').classList.toggle('active', source === 'exam');
   document.getElementById('new-exercise-controls').style.display = source === 'new' ? '' : 'none';
   document.getElementById('archive-filter-row').style.display = source === 'archive' ? '' : 'none';
+  document.getElementById('exam-nav').style.display = 'none';
+  document.getElementById('archive-back-btn').style.display = 'none';
+
   if (source === 'new') {
     showExerciseState('placeholder');
-    document.getElementById('archive-back-btn').style.display = 'none';
     currentArchiveId = null;
-  } else {
+    examQueue = [];
+  } else if (source === 'archive') {
+    examQueue = [];
     showExerciseState('placeholder');
     document.getElementById('ex-placeholder').style.display = 'none';
     document.getElementById('ex-archive').style.display = 'block';
     renderArchiveList();
+  } else {
+    examQueue = [];
+    examIndex = 0;
+    document.getElementById('exam-config-form').style.display = 'block';
+    document.getElementById('exam-summary').style.display = 'none';
+    showExerciseState('exam-config');
+    updateExamArchiveHint();
   }
 }
 
@@ -801,6 +815,204 @@ function loadArchiveEntry(id) {
   displayExercise(entry.question, entry.solution);
   document.getElementById('archive-back-btn').style.display = '';
   showExerciseState('result');
+}
+
+// ─── Exam Mode ───────────────────────────────────────────────
+
+function setExamCount(n) {
+  examCount = n;
+  document.querySelectorAll('#exam-count-group .exam-opt-btn').forEach(b =>
+    b.classList.toggle('active', +b.dataset.value === n));
+  updateExamArchiveHint();
+}
+
+function setExamSource(src) {
+  examSourceMode = src;
+  document.querySelectorAll('#exam-source-group .exam-opt-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.value === src));
+  updateExamArchiveHint();
+}
+
+function updateExamArchiveHint() {
+  const hint = document.getElementById('exam-archive-hint');
+  const archive = getArchive();
+  if (examSourceMode === 'new') {
+    hint.style.display = 'none';
+    return;
+  }
+  hint.style.display = 'block';
+  if (examSourceMode === 'archive') {
+    if (archive.length === 0)
+      hint.textContent = 'Kein Archiv vorhanden — alle Aufgaben werden neu generiert.';
+    else if (archive.length < examCount)
+      hint.textContent = `Archiv hat ${archive.length} Aufgaben — fehlende ${examCount - archive.length} werden neu generiert.`;
+    else
+      hint.textContent = `${examCount} zufällige Aufgaben aus dem Archiv.`;
+  } else {
+    const fromArchive = Math.min(Math.floor(examCount / 2), archive.length);
+    const fromNew = examCount - fromArchive;
+    if (archive.length === 0)
+      hint.textContent = 'Kein Archiv vorhanden — alle Aufgaben werden neu generiert.';
+    else
+      hint.textContent = `ca. ${fromArchive} aus Archiv + ${fromNew} neu generiert, zufällig gemischt.`;
+  }
+}
+
+async function startExam() {
+  const startBtn = document.getElementById('exam-start-btn');
+  startBtn.disabled = true;
+  startBtn.innerHTML = '<span class="gen-icon">⏳</span> Wird vorbereitet…';
+  examQueue = [];
+  examIndex = 0;
+  const archive = getArchive();
+
+  try {
+    if (examSourceMode === 'new') {
+      showExerciseState('loading');
+      examQueue = await generateExamExercises(examCount);
+    } else if (examSourceMode === 'archive') {
+      const shuffled = [...archive].sort(() => Math.random() - 0.5);
+      examQueue = shuffled.slice(0, examCount).map(e => ({ ...e, fromArchive: true }));
+      const missing = examCount - examQueue.length;
+      if (missing > 0) {
+        showExerciseState('loading');
+        examQueue = [...examQueue, ...await generateExamExercises(missing)];
+      }
+    } else {
+      const archiveCount = Math.min(Math.floor(examCount / 2), archive.length);
+      const archivePicked = [...archive].sort(() => Math.random() - 0.5)
+        .slice(0, archiveCount).map(e => ({ ...e, fromArchive: true }));
+      showExerciseState('loading');
+      const newOnes = await generateExamExercises(examCount - archiveCount);
+      examQueue = [...archivePicked, ...newOnes].sort(() => Math.random() - 0.5);
+    }
+  } catch (err) {
+    showExerciseState('error');
+    document.getElementById('ex-error-msg').textContent = err.message;
+    startBtn.disabled = false;
+    startBtn.innerHTML = '<span class="gen-icon">🎯</span> Prüfung starten';
+    return;
+  }
+
+  startBtn.disabled = false;
+  startBtn.innerHTML = '<span class="gen-icon">🎯</span> Prüfung starten';
+
+  if (examQueue.length === 0) {
+    showToast('⚠ Keine Aufgaben verfügbar');
+    showExerciseState('exam-config');
+    return;
+  }
+  showExamExercise(0);
+}
+
+async function generateExamExercises(count) {
+  const allTopics = getAllTopics();
+  const shuffled = [...allTopics].sort(() => Math.random() - 0.5);
+  const types = ['berechnung', 'mc', 'interpretation', 'mix'];
+  const results = [];
+  const loadingP = document.querySelector('#ex-loading p');
+
+  for (let i = 0; i < count; i++) {
+    if (loadingP) loadingP.textContent = `Aufgabe ${i + 1} von ${count} wird generiert…`;
+    const topic = shuffled[i % shuffled.length];
+    const type = types[Math.floor(Math.random() * types.length)];
+    try {
+      const text = await callAnthropicApi(buildPrompt(topic, type));
+      const { question, solution } = parseExercise(text);
+      const entry = {
+        id: Date.now() + i, topicId: topic.id, topicTitle: topic.title,
+        type, question, solution, savedAt: new Date().toISOString(), rating: null, fromArchive: false
+      };
+      addToArchive(entry);
+      results.push(entry);
+    } catch (err) {
+      console.warn('Exam generation failed:', topic.title, err.message);
+    }
+  }
+  if (loadingP) loadingP.textContent = 'Aufgabe wird generiert…';
+  return results;
+}
+
+function showExamExercise(index) {
+  examIndex = index;
+  const entry = examQueue[index];
+  if (!entry) return;
+
+  exerciseState = { question: entry.question, solution: entry.solution, topicId: entry.topicId };
+  currentArchiveId = entry.id || null;
+
+  displayExercise(entry.question, entry.solution);
+  showExerciseState('result');
+
+  document.getElementById('exam-nav').style.display = 'block';
+  document.getElementById('archive-back-btn').style.display = 'none';
+  document.getElementById('exam-topic-label').textContent = entry.topicTitle;
+  document.getElementById('exam-counter').textContent = `Aufgabe ${index + 1} / ${examQueue.length}`;
+  document.getElementById('exam-prev-btn').disabled = index === 0;
+  document.getElementById('exam-next-btn').textContent =
+    index === examQueue.length - 1 ? 'Abschliessen ✓' : 'Weiter →';
+  updateExamDots();
+}
+
+function updateExamDots() {
+  const dots = document.getElementById('exam-dots');
+  if (!dots) return;
+  dots.innerHTML = examQueue.map((e, i) => {
+    const cls = ['exam-dot',
+      i === examIndex ? 'active' : e.rating === 'understood' ? 'ok' : e.rating === 'review' ? 'bad' : ''
+    ].filter(Boolean).join(' ');
+    return `<span class="${cls}" onclick="showExamExercise(${i})" title="${e.topicTitle}"></span>`;
+  }).join('');
+}
+
+function examNavigate(dir) {
+  const next = examIndex + dir;
+  if (next < 0) return;
+  if (next >= examQueue.length) { endExam(); return; }
+  showExamExercise(next);
+}
+
+function endExam() {
+  const understood = examQueue.filter(e => e.rating === 'understood').length;
+  const review     = examQueue.filter(e => e.rating === 'review').length;
+  const unrated    = examQueue.length - understood - review;
+
+  document.getElementById('exam-nav').style.display = 'none';
+  showExerciseState('exam-config');
+  document.getElementById('exam-config-form').style.display = 'none';
+
+  const summary = document.getElementById('exam-summary');
+  summary.style.display = 'block';
+  summary.innerHTML = `
+    <div class="exam-summary-title">Prüfung abgeschlossen</div>
+    <div class="exam-summary-stats">
+      <div class="exam-stat ok">
+        <div class="exam-stat-num">${understood}</div>
+        <div class="exam-stat-label">Verstanden</div>
+      </div>
+      <div class="exam-stat bad">
+        <div class="exam-stat-num">${review}</div>
+        <div class="exam-stat-label">Nochmal üben</div>
+      </div>
+      ${unrated > 0 ? `<div class="exam-stat neutral">
+        <div class="exam-stat-num">${unrated}</div>
+        <div class="exam-stat-label">Nicht bewertet</div>
+      </div>` : ''}
+    </div>
+    <button class="gen-button" onclick="resetExamToConfig()" style="margin-top:20px;width:100%">
+      <span class="gen-icon">🎯</span> Neue Prüfung starten
+    </button>
+  `;
+
+  examQueue = [];
+  examIndex = 0;
+  updateProgress();
+  updateWeakList();
+}
+
+function resetExamToConfig() {
+  document.getElementById('exam-config-form').style.display = 'block';
+  document.getElementById('exam-summary').style.display = 'none';
 }
 
 // ─── Notes ───────────────────────────────────────────────────
