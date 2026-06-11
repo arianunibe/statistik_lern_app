@@ -309,6 +309,9 @@ Erstelle eine Übungsaufgabe zum Thema: **${topic.title}**
 
 Inhaltlicher Kontext: ${topic.exerciseContext}
 
+Theorie-Inhalt zu diesem Thema (massgeblich für erlaubte Formeln):
+${topic.content}
+
 Aufgabentyp: ${typeInstructions[type]}
 
 Anforderungen:
@@ -317,6 +320,7 @@ Anforderungen:
 - Realistische, überschaubare Zahlen
 - **Vollständigkeit:** Die Lösung muss JEDE Teilaufgabe (a), b), c) usw.) einzeln und vollständig beantworten. Keine Teilaufgabe darf fehlen oder abgekürzt werden.
 - **Zahlenkonsistenz:** Überprüfe alle Zahlen auf Konsistenz bevor du antwortest. Relative Häufigkeiten müssen exakt 1.0 ergeben. Absolute Häufigkeiten müssen mit relativen übereinstimmen ($f_j = h_j / n$). Kumulierte Werte müssen aus den vorherigen berechnet sein. Alle berechneten Ergebnisse in der Lösung müssen mit den Ausgangsdaten übereinstimmen.
+- **Formel-Beschränkung:** Verwende für Aufgabe und Lösung NUR Formeln und Methoden, die im obigen Theorie-Inhalt zu diesem Thema vorkommen. Setze keine Formeln oder Konzepte voraus, die dort nicht behandelt werden.
 
 Antworte GENAU in diesem Format (ohne weitere Einleitungen):
 
@@ -946,7 +950,7 @@ function showExamExercise(index) {
 
   document.getElementById('exam-nav').style.display = 'block';
   document.getElementById('archive-back-btn').style.display = 'none';
-  document.getElementById('exam-topic-label').textContent = entry.topicTitle;
+  document.getElementById('exam-topic-label').style.display = 'none';
   document.getElementById('exam-counter').textContent = `Aufgabe ${index + 1} / ${examQueue.length}`;
   document.getElementById('exam-prev-btn').disabled = index === 0;
   document.getElementById('exam-next-btn').textContent =
@@ -961,7 +965,7 @@ function updateExamDots() {
     const cls = ['exam-dot',
       i === examIndex ? 'active' : e.rating === 'understood' ? 'ok' : e.rating === 'review' ? 'bad' : ''
     ].filter(Boolean).join(' ');
-    return `<span class="${cls}" onclick="showExamExercise(${i})" title="${e.topicTitle}"></span>`;
+    return `<span class="${cls}" onclick="showExamExercise(${i})" title="Aufgabe ${i + 1}"></span>`;
   }).join('');
 }
 
